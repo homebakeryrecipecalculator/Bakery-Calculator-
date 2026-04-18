@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Bakery Pricing Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--cr:#FDF6EC;--wm:#FFFBF5;--bd:#3D1F0D;--bm:#7A3E1A;--go:#D4A030;--gl:#F2C96E;--sg:#4A6741;--rs:#C04B2D;--tx:#2C1A0E;--tm:#7A6555;--br:#E8D5BC;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cr);color:var(--tx);font-family:'DM Sans',sans-serif;min-height:100vh;}
+header{background:var(--bd);color:var(--cr);padding:22px 16px 16px;text-align:center;}
+header h1{font-family:'Playfair Display',serif;font-size:clamp(16px,5vw,24px);margin-bottom:4px;}
+header p{font-size:11px;color:rgba(253,246,236,.6);font-weight:300;}
+.badge{display:inline-block;margin-top:8px;background:var(--go);color:var(--bd);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+.tabs{display:flex;position:sticky;top:0;z-index:20;background:var(--bd);border-bottom:2px solid var(--go);overflow-x:auto;box-shadow:0 2px 6px rgba(61,31,13,.18);}
+.tab{flex:1;min-width:68px;padding:9px 3px;background:none;border:none;color:rgba(253,246,236,.5);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;cursor:pointer;white-space:nowrap;position:relative;}
+.tab.on,.tab:focus,.tab:hover{color:var(--gl);background:rgba(212,160,48,.1);}
+.tab.on::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--go);}
+.pane{display:none;padding:12px 11px 60px;max-width:680px;margin:0 auto;}
+.pane.on{display:block;}
+.card{background:var(--wm);border:1px solid var(--br);border-radius:10px;padding:14px;margin-bottom:11px;box-shadow:0 2px 5px rgba(61,31,13,.09);}
+.ct{font-family:'Playfair Display',serif;font-size:15px;color:var(--bd);margin-bottom:2px;}
+.cs{font-size:11px;color:var(--tm);margin-bottom:10px;line-height:1.5;}
+.fl{margin-bottom:9px;}
+.fl label{display:block;font-size:11px;font-weight:700;color:var(--bm);margin-bottom:2px;text-transform:uppercase;letter-spacing:.2px;}
+.fh{font-size:10px;color:var(--tm);display:block;margin-bottom:2px;text-transform:none;letter-spacing:0;}
+input,select{width:100%;padding:7px 9px;border:1.5px solid var(--br);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;background:#fff;color:var(--tx);-webkit-appearance:none;}
+input:focus,select:focus{outline:none;border-color:var(--go);box-shadow:0 0 0 3px rgba(212,160,48,.12);}
+.pw{position:relative;}.pw .p{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--tm);font-size:12px;pointer-events:none;font-weight:600;}.pw input{padding-left:19px;}
+.sw{position:relative;}.sw .s{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--tm);font-size:10px;pointer-events:none;}.sw input{padding-right:32px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;}
+.btn{display:inline-flex;align-items:center;padding:8px 13px;border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;}
+.bg{background:var(--bd);color:var(--cr);}
+.bgo{background:var(--go);color:var(--bd);}
+.bgh{background:transparent;color:var(--bm);border:1.5px solid var(--br);}
+.bdel{background:none;border:none;color:var(--rs);cursor:pointer;font-size:15px;padding:2px 5px;}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.rb{background:var(--wm);border:1.5px solid var(--br);border-radius:8px;padding:10px 11px;text-align:center;}
+.rb.hi{background:var(--bd);border-color:var(--go);}
+.rb.gd{background:rgba(74,103,65,.08);border-color:#9DC49D;}
+.rl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--tm);margin-bottom:4px;}
+.rb.hi .rl{color:rgba(253,246,236,.5);}
+.rv{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--bd);line-height:1;}
+.rb.hi .rv{color:var(--gl);}
+.rb.gd .rv{color:var(--sg);}
+.rn{font-size:9px;color:var(--tm);margin-top:2px;}
+.rb.hi .rn{color:rgba(253,246,236,.4);}
+.ins{padding:10px 11px;border-radius:7px;border-left:3px solid var(--go);background:rgba(212,160,48,.08);font-size:12px;line-height:1.6;color:var(--bd);margin-top:9px;}
+.ins.gd{border-left-color:var(--sg);background:rgba(74,103,65,.07);}
+.ins.dn{border-left-color:var(--rs);background:rgba(192,75,45,.07);}
+.li{display:flex;align-items:flex-start;justify-content:space-between;padding:8px 10px;background:var(--cr);border:1px solid var(--br);border-radius:7px;margin-bottom:5px;gap:6px;}
+.ln{font-size:12px;font-weight:600;color:var(--bd);margin-bottom:1px;}
+.ld{font-size:10px;color:var(--tm);}
+.sdv{display:flex;align-items:center;gap:7px;margin:14px 0 8px;}
+.sdv span{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--tm);white-space:nowrap;}
+.sdv::before,.sdv::after{content:'';flex:1;height:1px;background:var(--br);}
+.htip{background:var(--bd);color:var(--cr);border-radius:8px;padding:11px 12px;margin-top:10px;font-size:12px;line-height:1.6;}
+.htip::before{content:'Heather says:';display:block;font-size:10px;font-weight:700;letter-spacing:.5px;color:var(--gl);margin-bottom:4px;text-transform:uppercase;}
+.ir{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:6px;align-items:end;margin-bottom:6px;}
+.tag{display:inline-block;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:600;}
+.tg{background:rgba(212,160,48,.12);color:var(--bm);}
+.ts{background:rgba(74,103,65,.1);color:var(--sg);}
+.tr{background:rgba(192,75,45,.08);color:var(--rs);}
+.emp{text-align:center;padding:20px 10px;color:var(--tm);font-size:12px;}
+.emp i{display:block;font-size:26px;margin-bottom:5px;font-style:normal;}
+footer{background:var(--bd);color:rgba(253,246,236,.4);text-align:center;padding:11px;font-size:10px;}
+footer strong{color:var(--gl);}
+@media(max-width:400px){.g3{grid-template-columns:1fr 1fr;}.ir{grid-template-columns:1fr 1fr;}.ir .bdel{grid-column:span 2;justify-self:end;}}
+
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at top left, rgba(212,160,48,.10), transparent 32%),radial-gradient(circle at bottom right, rgba(122,62,26,.08), transparent 30%);pointer-events:none;z-index:-1;}
+.topbar{max-width:680px;margin:14px auto 0;padding:0 11px;}
+.hero{background:linear-gradient(135deg,#3D1F0D 0%,#5A2C12 52%,#7A3E1A 100%);color:var(--cr);border:1px solid rgba(242,201,110,.18);border-radius:16px;padding:18px 16px;box-shadow:0 10px 30px rgba(61,31,13,.18);position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;right:-24px;top:-24px;width:120px;height:120px;background:radial-gradient(circle, rgba(242,201,110,.22), transparent 65%);}
+.eyebrow{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--gl);font-weight:700;margin-bottom:8px;}
+.hero h2{font-family:'Playfair Display',serif;font-size:24px;line-height:1.1;margin-bottom:8px;max-width:420px;}
+.hero p{font-size:12px;line-height:1.7;color:rgba(253,246,236,.86);max-width:520px;}
+.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:end;}
+.hero-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px;}
+.metric{background:rgba(255,255,255,.08);border:1px solid rgba(242,201,110,.15);border-radius:12px;padding:10px;backdrop-filter: blur(2px);}
+.metric .ml{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:rgba(253,246,236,.58);margin-bottom:5px;}
+.metric .mv{font-family:'Playfair Display',serif;font-size:18px;color:var(--gl);}
+.statusbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:rgba(255,251,245,.9);border:1px solid var(--br);border-radius:12px;box-shadow:0 4px 14px rgba(61,31,13,.06);margin:10px 0 0;}
+.statuspill{display:inline-flex;align-items:center;gap:6px;background:rgba(74,103,65,.10);color:var(--sg);padding:6px 10px;border-radius:999px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;}
+.statuspill.bad{background:rgba(192,75,45,.10);color:var(--rs);}
+.minihelp{font-size:11px;color:var(--tm);line-height:1.6;}
+.card{border-radius:14px;box-shadow:0 8px 20px rgba(61,31,13,.06);}
+.ct{font-size:17px;}
+.tabs{position:sticky;top:0;z-index:5;backdrop-filter: blur(6px);background:rgba(61,31,13,.94);}
+.tab{font-size:10.5px;padding:11px 5px;}
+.saveflash{position:fixed;right:16px;bottom:16px;background:var(--bd);color:var(--cr);padding:10px 12px;border-radius:10px;font-size:11px;box-shadow:0 8px 24px rgba(61,31,13,.2);opacity:0;transform:translateY(10px);transition:.25s ease;pointer-events:none;z-index:20;}
+.saveflash.on{opacity:1;transform:translateY(0);}
+.actionrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.ghostbox{padding:11px 12px;border-radius:10px;background:linear-gradient(180deg, rgba(212,160,48,.08), rgba(255,255,255,.2));border:1px solid rgba(212,160,48,.25);font-size:11px;line-height:1.7;color:var(--bd);}
+.more-pricing{border:1px solid var(--br);border-radius:10px;background:rgba(255,255,255,.45);padding:8px 10px;}
+.more-pricing summary{cursor:pointer;font-size:12px;font-weight:700;color:var(--bm);list-style:none;}
+.more-pricing summary::-webkit-details-marker{display:none;}
+.more-pricing summary::after{content:'+';float:right;font-size:16px;line-height:1;color:var(--go);}
+.more-pricing[open] summary::after{content:'−';}
+
+@media(max-width:560px){.hero-grid{grid-template-columns:1fr;}.hero h2{font-size:21px;}.hero-metrics{grid-template-columns:1fr 1fr;}}
+
+.tabs{display:none !important;}
+.pane{display:block !important;}
+.card{scroll-margin-top:16px;}
+body{padding-bottom:24px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧁 Homebakery Calculator</h1>
+  <p>Know your numbers. Price smarter. Pay yourself on purpose.</p>
+  <span class="badge">Home Bakery Pricing Calculator</span>
+</header>
+<div class="card" style="max-width:760px;margin:14px auto 0;">
+  <div class="ct">Single-Page Mobile Version</div>
+  <div class="cs">Built to work for breads, cookies, cakes, pastries, bars, cupcakes, and more. Everything stays on one page so it actually works on phone previews and picky browsers.</div>
+</div>
+
+<div id="saveFlash" class="saveflash">Saved</div>
+
+<!-- PANTRY -->
+<div id="pane-pantry" class="pane on">
+  <div class="card">
+    <div class="ct">My Ingredient Pantry</div>
+    <div class="cs">Enter each ingredient as you buy it. The calculator works out cost per gram, oz, cup, or each. Update a price anytime and every recipe recalculates.</div>
+    <div class="fl"><label>Ingredient Name</label><input type="text" id="ip-n" placeholder="e.g. All-purpose flour, Butter, Eggs..."></div>
+    <div class="g2">
+      <div class="fl"><label>Package Size</label><span class="fh">How much in the package?</span><div class="sw"><input type="number" id="ip-q" placeholder="10" step="0.01" min="0.01" oninput="pvw()"><span class="s" id="ip-ul">lb</span></div></div>
+      <div class="fl"><label>Package Unit</label><select id="ip-u" onchange="upUL();pvw()">
+        <optgroup label="Weight"><option value="lb">Pounds (lb)</option><option value="oz">Ounces (oz)</option><option value="g">Grams (g)</option><option value="kg">Kilograms (kg)</option></optgroup>
+        <optgroup label="Volume"><option value="cup">Cups</option><option value="tbsp">Tablespoons</option><option value="tsp">Teaspoons</option><option value="floz">Fluid oz</option><option value="ml">Milliliters</option><option value="l">Liters</option></optgroup>
+        <optgroup label="Count"><option value="each">Count / Each</option></optgroup>
+      </select></div>
+    </div>
+    <div class="g2">
+      <div class="fl"><label>Price Paid ($)</label><div class="pw"><span class="p">$</span><input type="number" id="ip-p" placeholder="9.99" step="0.01" min="0" oninput="pvw()"></div></div>
+      <div class="fl"><label>Store (optional)</label><input type="text" id="ip-s" placeholder="Costco, Sam's, Walmart..."></div>
+    </div>
+    <div id="ip-pv" class="ins" style="display:none;margin-top:8px;"></div>
+    <div style="display:flex;gap:7px;margin-top:9px;flex-wrap:wrap;">
+      <button class="btn bgo" onclick="addIng()">+ Add to Pantry</button>
+      <button class="btn bgh" onclick="clrIng()">Clear</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">Your Pantry</div>
+    <div class="cs">Click Edit to update a price anytime.</div>
+    <div id="pantry-list"><div class="emp"><i>🛒</i>No ingredients yet.</div></div>
+  </div>
+  <div class="htip">Most home bakers undercharge because they think in batches, not real costs. When you know your 10 lb bag of flour costs $9.99 and your recipe uses 500g, you know flour costs $1.10 per loaf — not a guess.</div>
+</div>
+
+<!-- RECIPE -->
+<div id="pane-recipe" class="pane">
+  <div class="card">
+    <div class="ct">Recipe Cost Calculator</div>
+    <div class="cs">Select pantry ingredients, enter amounts, and get usable pricing ranges instead of one fantasy number. This works for breads, cookies, bars, cakes, cupcakes, pastries, and other home bakery products.</div>
+    <div class="g2">
+      <div class="fl"><label>Recipe Name</label><input type="text" id="rn" placeholder="e.g. Chocolate Chip Cookies, Vanilla Cupcakes, Sandwich Bread..."></div>
+      <div class="fl"><label>Batch Yield (items)</label><div class="sw"><input type="number" id="ry" value="1" min="1" oninput="calcR()"><span class="s">items</span></div></div>
+    </div>
+    <div class="sdv"><span>Ingredients</span></div>
+    <div id="rec-ings"></div>
+    <button class="btn bgh" style="font-size:11px;padding:6px 10px;" onclick="addRow()">+ Add Ingredient</button>
+    <div class="sdv"><span>Labor</span></div>
+    <div class="g3">
+      <div class="fl"><label>Active Time (hrs)</label><span class="fh">Mixing, shaping, decorating, packing</span><input type="number" id="ra" value="0.5" step="0.25" min="0" oninput="calcR()"></div>
+      <div class="fl"><label>Passive Time (hrs)</label><span class="fh">Proofing, baking, cooling, chilling</span><input type="number" id="rp" value="1" step="0.25" min="0" oninput="calcR()"></div>
+      <div class="fl"><label>True Hourly Value ($)</label><span class="fh">What your time is actually worth</span><div class="pw"><span class="p">$</span><input type="number" id="rw" value="18" step="1" min="1" oninput="syncPayMode();calcR()"></div></div>
+    </div>
+    <div class="g2">
+      <div class="fl"><label>Pay Strategy</label><select id="rpaymode" onchange="syncPayMode();calcR()">
+        <option value="survival">Survival / Reinvesting</option>
+        <option value="sustainable" selected>Sustainable / Fair Pay</option>
+        <option value="scale">Scale / Replace Yourself</option>
+        <option value="custom">Custom</option>
+      </select></div>
+      <div class="fl"><label>Actual Pay Rate ($)</label><span class="fh">What you are choosing to pay yourself now</span><div class="pw"><span class="p">$</span><input type="number" id="rpw" value="18" step="1" min="0" oninput="setCustomPay();calcR()"></div></div>
+    </div>
+    <div class="fl"><label>Passive Time Reality Mode</label><select id="rrm" onchange="calcR()">
+      <option value="0.3">Conservative — 30% of hourly rate</option>
+      <option value="0.5" selected>Realistic — 50% of hourly rate</option>
+      <option value="1">Full Cost — 100% of hourly rate</option>
+    </select></div>
+    <div class="sdv"><span>Packaging &amp; Overhead</span></div>
+    <div class="g2">
+      <div class="fl"><label>Packaging / Item ($)</label><div class="pw"><span class="p">$</span><input type="number" id="rpk" value="0.50" step="0.05" min="0" oninput="calcR()"></div></div>
+      <div class="fl"><label>Overhead / Batch ($)</label><span class="fh">Gas, utilities, equipment</span><div class="pw"><span class="p">$</span><input type="number" id="roh" value="2.00" step="0.25" min="0" oninput="calcR()"></div></div>
+    </div>
+    <div class="g2">
+      <div class="fl"><label>Product Role</label><select id="rmode" onchange="calcR()">
+        <option value="traffic" selected>Traffic builder / staple item</option>
+        <option value="core">Core product / balanced</option>
+        <option value="premium">Premium / specialty item</option>
+      </select></div>
+      <div class="fl"><label>Weekly Menu Product Count</label><span class="fh">Too many products wreck consistency</span><input type="number" id="rmenu" value="5" min="1" max="20" oninput="calcR()"></div>
+    </div>
+    <div class="fl"><label>Ideal Target Profit Margin: <span id="mgl" style="color:var(--go);">35%</span></label><input type="range" id="rmg" min="10" max="60" value="35" oninput="document.getElementById('mgl').textContent=this.value+'%';calcR()"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Your Numbers</div>
+    <div id="rbk" style="font-size:11px;color:var(--tm);margin-bottom:8px;line-height:1.8;"></div>
+    <div class="rb gd" style="margin-top:6px;">
+      <div class="rl">Use This Price On Your Menu</div>
+      <div class="rv" id="rsp">$--</div>
+      <div class="rn">Market Price — this is the one to use</div>
+    </div>
+    <details class="more-pricing" style="margin-top:10px;">
+      <summary>Show the other pricing numbers</summary>
+      <div class="rg" style="margin-top:10px;">
+        <div class="rb"><div class="rl">Cash Cost/Item</div><div class="rv" id="ri">$--</div><div class="rn">ingredients + packaging + overhead</div></div>
+        <div class="rb"><div class="rl">Full-Cost Reference</div><div class="rv" id="rc">$--</div><div class="rn">blended reference, not your menu price</div></div>
+        <div class="rb"><div class="rl">Floor Price</div><div class="rv" id="rfloor">$--</div><div class="rn">hard minimum only</div></div>
+        <div class="rb hi"><div class="rl">Long-Term Goal Price</div><div class="rv" id="rideal">$--</div><div class="rn">next-step target, not today's menu price</div></div>
+        <div class="rb"><div class="rl">Reinvested / Underpaid</div><div class="rv" id="rpf">$--</div><div class="rn">gap between true value and chosen pay</div></div>
+      </div>
+    </details>
+    <div id="rins" class="ins" style="margin-top:10px;"></div>
+    <div id="rwhich" class="ghostbox" style="margin-top:10px;"></div>
+    <div id="rmenuwarn" class="ins dn" style="margin-top:10px;display:none;"></div>
+    <div style="display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;">
+      <button class="btn bgo" onclick="saveR()">Save Recipe</button>
+      <button class="btn bgh" onclick="clrR()">Clear</button>
+    </div>
+  </div>
+  <div class="htip">Passive time is not free, but paying yourself is still a strategy choice. Use this to separate what your time is truly worth from what you are choosing to take right now while you grow or reinvest.</div>
+</div>
+
+<!-- OVERHEAD -->
+<div id="pane-overhead" class="pane">
+  <div class="card">
+    <div class="ct">Business Overhead Tracker</div>
+    <div class="cs">Track your regular business costs — market booth fees, delivery fuel, Simply Bread, packaging supplies. Know your real weekly overhead so you can price it in.</div>
+    <div class="fl"><label>Expense Name</label><input type="text" id="on" placeholder="e.g. Farmers market booth fee, Fuel for delivery route..."></div>
+    <div class="g3">
+      <div class="fl"><label>Amount ($)</label><div class="pw"><span class="p">$</span><input type="number" id="oa" placeholder="25" step="0.01" min="0"></div></div>
+      <div class="fl"><label>Frequency</label><select id="of"><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="annual">Annual</option><option value="perbake">Per bake</option></select></div>
+      <div class="fl"><label>Category</label><select id="oc"><option value="market">Market/Events</option><option value="delivery">Delivery</option><option value="supplies">Supplies</option><option value="software">Apps/Software</option><option value="other">Other</option></select></div>
+    </div>
+    <button id="add-expense-btn" class="btn bgo" type="button" onclick="return addOH()">+ Add Expense</button>
+    <div id="oh-msg" class="ins" style="display:none;margin-top:10px;"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Your Overhead Expenses</div>
+    <div id="oh-list"><div class="emp"><i>📋</i>No expenses yet.</div></div>
+    <div id="oh-sum" style="display:none;margin-top:11px;padding:10px;background:var(--cr);border-radius:7px;border:1px solid var(--br);">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--tm);margin-bottom:6px;">Weekly overhead summary</div>
+      <div class="g2">
+        <div><div style="font-size:10px;color:var(--tm);">Total per week</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--bd);" id="oht">$0.00</div></div>
+        <div><div style="font-size:10px;color:var(--tm);">Per bake cycle</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--sg);" id="ohp">$0.00</div></div>
+      </div>
+      <div class="fl" style="margin-top:10px;margin-bottom:0;"><label>Bake cycles per week?</label><input type="number" id="ohc" value="1" min="1" max="7" oninput="reOH()" style="max-width:64px;"></div>
+    </div>
+  </div>
+  <div class="htip">Market fees are a real cost most bakers forget to price in. A $25 booth fee divided by 20 items is $1.25 per item just to be there — before a single ingredient. Track it here and know your real numbers.</div>
+</div>
+
+<!-- SAVED -->
+<div id="pane-saved" class="pane">
+  <div class="card">
+    <div class="ct">My Saved Recipes</div>
+    <div class="cs">All your saved recipes. Hit Edit to update any recipe when ingredient prices change.</div>
+    <div id="saved-list"><div class="emp"><i>📁</i>No saved recipes yet. Build one in the Recipe tab.</div></div>
+  </div>
+  <div class="card" id="menu-card" style="display:none;">
+    <div class="ct">My Menu Price List</div>
+    <div class="cs">Your full menu — ready to reference when posting your weekly orders.</div>
+    <div id="menu-items"></div>
+  </div>
+</div>
+
+<!-- WEEKLY -->
+<div id="pane-weekly" class="pane">
+  <div class="card">
+    <div class="ct">Weekly Bake Cycle Projector</div>
+    <div class="cs">See what consistent weekly bakes generate. Load from a saved recipe or enter manually.</div>
+    <div class="fl"><label>Load from Saved Recipe</label><select id="wrec" onchange="loadWR()"><option value="">-- or enter manually below --</option></select></div>
+    <div class="g2">
+      <div class="fl"><label>Avg Sell Price / Item ($)</label><div class="pw"><span class="p">$</span><input type="number" id="wpr" value="12" step="0.50" min="1" oninput="calcW()"></div></div>
+      <div class="fl"><label>Cost / Item ($)</label><span class="fh">From your recipe calculator</span><div class="pw"><span class="p">$</span><input type="number" id="wco" value="5" step="0.25" min="0" oninput="calcW()"></div></div>
+    </div>
+    <div class="g2">
+      <div class="fl"><label>Units Per Bake Cycle</label><span class="fh">Start conservative</span><input type="number" id="wun" value="20" min="1" oninput="calcW()"></div>
+      <div class="fl"><label>Active Cycles / Month</label><span class="fh">It is okay to take weeks off</span><input type="number" id="wcy" value="4" min="1" max="5" oninput="calcW()"></div>
+    </div>
+    <div class="fl"><label>Weekly Menu Product Count</label><span class="fh">Your core menu should stay tight and repeatable</span><input type="number" id="wmc" value="5" min="1" max="20" oninput="calcW()"></div>
+  </div>
+  <div class="card"><div class="ct">Your Projections</div><div id="wrows"></div><div id="wins" class="ins" style="margin-top:10px;"></div></div>
+  <div class="card"><div class="ct">Growth Path</div><div class="cs">What happens when you add 5 more units per cycle?</div><div id="wgrow"></div></div>
+  <div class="htip">Consistency beats big bake days every time. I built my loyal customer base by showing up every single week — same products, same quality, same schedule. One solid weekly bake cycle done consistently for 90 days builds more than three sporadic big ones ever will.</div>
+</div>
+
+<!-- PROFIT FIRST -->
+<div id="pane-pf" class="pane">
+  <div class="card">
+    <div class="ct">Profit First Allocator</div>
+    <div class="cs">Use realistic stage-based starting percentages, then move to custom only when your numbers can actually support it.</div>
+    <div class="ins" style="margin-bottom:11px;"><strong>The Profit First rule:</strong> start conservative, build the habit, then increase what goes to you as revenue becomes consistent. Beginners should not be defaulting to a 50% owner's pay fantasy.</div>
+    <div class="fl"><label>Business Stage</label><select id="pfstage" onchange="applyPFStage()">
+      <option value="launch">Setup / Validation (under $500/month)</option>
+      <option value="consistent">Consistent Orders ($500-$2,000/month)</option>
+      <option value="scaling">Scaling ($2k-$5k+ / nearing capacity)</option>
+      <option value="custom">Custom</option>
+    </select></div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:-2px;margin-bottom:11px;">
+      <button class="btn bgh" type="button" onclick="applyPFStage()">Apply stage defaults</button>
+      <div style="font-size:11px;color:var(--tm);align-self:center;">Manual edits switch this to Custom.</div>
+    </div>
+    <div id="pfstagehelp" class="ins" style="margin-bottom:11px;"></div>
+    <div class="fl"><label>Revenue This Week ($)</label><div class="pw"><span class="p">$</span><input type="number" id="pfr" value="300" step="10" min="0" oninput="calcPF()"></div></div>
+    <div class="sdv"><span>Allocation % — must total 100%</span></div>
+    <div class="g2">
+      <div class="fl"><label>Profit (%)</label><input type="number" id="pfp" value="1" min="0" max="100" oninput="setPFCustomIfNeeded();calcPF()"></div>
+      <div class="fl"><label>Owner's Pay (%)</label><input type="number" id="pfo" value="10" min="0" max="100" oninput="setPFCustomIfNeeded();calcPF()"></div>
+    </div>
+    <div class="g2">
+      <div class="fl"><label>Taxes (%)</label><input type="number" id="pft" value="15" min="0" max="100" oninput="setPFCustomIfNeeded();calcPF()"></div>
+      <div class="fl"><label>Operations (%)</label><input type="number" id="pfe" value="74" min="0" max="100" oninput="setPFCustomIfNeeded();calcPF()"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">This Week's Allocation</div>
+    <div id="pfwarn" class="ins dn" style="display:none;margin-bottom:10px;"></div>
+    <div id="pfbars"></div>
+    <div id="pfchk" style="text-align:right;font-size:10px;color:var(--tm);margin-top:6px;"></div>
+    <div id="pfins" class="ins" style="margin-top:10px;"></div>
+    <div id="pfnext" class="ins" style="margin-top:10px;"></div>
+  </div>
+  <div class="card">
+    <div class="ct">Your 4 Accounts</div>
+    <div class="cs">Set these up before your first sale. Most banks offer free business checking.</div>
+    <div style="display:grid;gap:6px;">
+      <div class="li"><div><div class="ln">Profit Account</div><div class="ld">Touch only quarterly. Your proof the business is actually working.</div></div></div>
+      <div class="li"><div><div class="ln">Owner's Pay Account</div><div class="ld">Pay yourself on a set schedule — like a real paycheck.</div></div></div>
+      <div class="li"><div><div class="ln">Tax Account</div><div class="ld">Set aside and never touch. Pays your quarterly taxes.</div></div></div>
+      <div class="li"><div><div class="ln">Operating Expenses Account</div><div class="ld">The only account you spend from on the business.</div></div></div>
+    </div>
+  </div>
+  <div class="htip">I went into debt because I spent first and hoped there would be something left for me. There never was. Profit First flips that. You allocate the moment money comes in — even if your profit is just $2.50 that week. The habit is what matters.</div>
+</div>
+
+<!-- CHANNELS -->
+<div id="pane-channels" class="pane">
+  <div class="card">
+    <div class="ct">Build Your Sales Channel Map</div>
+    <div class="cs">The weekly bake cycle system works the same no matter where you sell. This helps you find which channels fit your situation and in what order to build them.</div>
+    <div class="ins" style="margin-bottom:11px;"><strong>The core system never changes:</strong> Weekly menu, take orders, bake what is sold, deliver or make available, repeat. What changes is where customers get your products. That part is 100% tailored to you.</div>
+    <div class="fl"><label>Where are you located?</label>
+      <select id="chloc" onchange="calcCh()">
+        <option value="">Select your situation...</option>
+        <option value="rural">Rural — far from town, limited foot traffic</option>
+        <option value="town">Small town — community events, local shops, maybe a market</option>
+        <option value="sub">Suburban — neighborhood traffic, multiple market options</option>
+        <option value="urban">City or urban — high foot traffic, lots of channels</option>
+      </select>
+    </div>
+    <div class="sdv"><span>Check everything available to you</span></div>
+    <div style="display:grid;gap:8px;" id="ch-checks">
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" id="ch1" onchange="calcCh()" style="margin-top:2px;accent-color:var(--go);"><div><strong>Farm stand or porch pickup</strong><br><span style="font-size:11px;color:var(--tm);">Customers come to your property to collect orders</span></div></label>
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" id="ch2" onchange="calcCh()" style="margin-top:2px;accent-color:var(--go);"><div><strong>Farmers market or pop-up market</strong><br><span style="font-size:11px;color:var(--tm);">Weekly or seasonal market with a booth</span></div></label>
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" id="ch3" onchange="calcCh()" style="margin-top:2px;accent-color:var(--go);"><div><strong>Local boutiques, shops, or mercantiles</strong><br><span style="font-size:11px;color:var(--tm);">Stock products in local shops on wholesale or consignment</span></div></label>
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" id="ch4" onchange="calcCh()" style="margin-top:2px;accent-color:var(--go);"><div><strong>Local delivery route</strong><br><span style="font-size:11px;color:var(--tm);">Drop off to customers or store locations on a set day each week</span></div></label>
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" id="ch5" onchange="calcCh()" style="margin-top:2px;accent-color:var(--go);"><div><strong>Workplaces or offices</strong><br><span style="font-size:11px;color:var(--tm);">A contact places a group order each week</span></div></label>
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" id="ch6" onchange="calcCh()" style="margin-top:2px;accent-color:var(--go);"><div><strong>Church or community organization</strong><br><span style="font-size:11px;color:var(--tm);">Warm trusted network — usually where first orders come from</span></div></label>
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" id="ch7" onchange="calcCh()" style="margin-top:2px;accent-color:var(--go);"><div><strong>Wholesale or events</strong><br><span style="font-size:11px;color:var(--tm);">Bulk orders for local events, restaurants, or shops</span></div></label>
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;"><input type="checkbox" id="ch8" onchange="calcCh()" style="margin-top:2px;accent-color:var(--go);"><div><strong>Online orders via Simply Bread or similar</strong><br><span style="font-size:11px;color:var(--tm);">Customers sign up and order through your link each week</span></div></label>
+    </div>
+  </div>
+  <div class="card" id="ch-res" style="display:none;"><div class="ct">Your Personalised Starting Path</div><div id="ch-adv"></div></div>
+  <div class="card">
+    <div class="ct">Heather's Real Model</div>
+    <div class="cs">Drott's Handmade, Atoka Oklahoma — built one channel at a time.</div>
+    <div class="ins" style="margin-bottom:11px;">I started at a farmers market because I'm rural Oklahoma — no neighborhood foot traffic, porch pickup was not realistic. Market proved my products. Then I approached local shops. Now I stock 4 locations every Friday plus individual orders through Simply Bread. One channel at a time, same system, every week.</div>
+    <div style="display:grid;gap:6px;margin-bottom:11px;">
+      <div class="li"><div><div class="ln">Rusty Relics — Atoka, OK</div><div class="ld">Home base. Booth and stocked products every Friday.</div></div></div>
+      <div class="li"><div><div class="ln">Mashburn Family Mercantile — Bokchito, OK</div><div class="ld">Weekly Friday stock delivery.</div></div></div>
+      <div class="li"><div><div class="ln">Miss J and Friends Home Decor — Durant, OK</div><div class="ld">Weekly Friday stock delivery.</div></div></div>
+      <div class="li"><div><div class="ln">The Barn Inn — Durant, OK</div><div class="ld">Weekly Friday stock delivery.</div></div></div>
+      <div class="li"><div><div class="ln">Simply Bread — Individual Weekly Orders</div><div class="ld">Customers order ahead, baked fresh, ready every Friday.</div></div></div>
+    </div>
+    <div style="padding:10px;background:var(--cr);border-radius:7px;border:1px solid var(--br);font-size:12px;line-height:1.9;">
+      Early week — prep, source ingredients, confirm orders<br>
+      Thursday — main bake day<br>
+      Friday — stock all 4 locations and fulfill individual orders<br>
+      Weekly — post menu, open orders, close at cutoff<br>
+      Repeat — same system, every week
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct">The Simply Bread App</div>
+    <div class="cs">Free. Built for home bakeries. Works alongside any sales channel.</div>
+    <div style="display:grid;gap:6px;margin-bottom:10px;">
+      <div class="li"><div><div class="ln">You own your customer list</div><div class="ld">Not a third-party platform</div></div></div>
+      <div class="li"><div><div class="ln">Post your weekly menu</div><div class="ld">Change it every week — seasonal items, whatever you are baking</div></div></div>
+      <div class="li"><div><div class="ln">Orders close at your cutoff</div><div class="ld">You set the time. No late orders. No chasing payments.</div></div></div>
+      <div class="li"><div><div class="ln">Bake exactly what was ordered</div><div class="ld">Zero guessing. Zero waste.</div></div></div>
+      <div class="li"><div><div class="ln">Works on top of any other channel</div><div class="ld">Store locations, markets, farm stand — handles individual orders alongside everything else</div></div></div>
+    </div>
+    <div class="htip">Simply Bread is what I use at Drott's Handmade. Post the menu, orders come in, bake what is ordered, done. Free and takes 20 minutes to set up. See it live at app.simply-bread.co/drottshandmade</div>
+  </div>
+</div>
+
+<footer><strong>Home Bakery Pricing Calculator</strong> by Heather Drott · @drottshandmade<br>Built from a real home bakery in Atoka, Oklahoma · Premium Calculator Edition</footer>
+
+<script>
+var pantry=[],recipes=[],overheads=[];
+function saveState(){
+  try{
+    localStorage.setItem('hb_pantry',JSON.stringify(pantry));
+    localStorage.setItem('hb_recipes',JSON.stringify(recipes));
+    localStorage.setItem('hb_overheads',JSON.stringify(overheads));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    pantry=JSON.parse(localStorage.getItem('hb_pantry')||'[]')||[];
+    recipes=JSON.parse(localStorage.getItem('hb_recipes')||'[]')||[];
+    overheads=JSON.parse(localStorage.getItem('hb_overheads')||'[]')||[];
+  }catch(e){ pantry=[]; recipes=[]; overheads=[]; }
+}
+var UM={lb:{b:'g',f:453.592,l:'lb',t:'w'},oz:{b:'g',f:28.3495,l:'oz',t:'w'},g:{b:'g',f:1,l:'g',t:'w'},kg:{b:'g',f:1000,l:'kg',t:'w'},cup:{b:'ml',f:236.588,l:'cup',t:'v'},tbsp:{b:'ml',f:14.787,l:'tbsp',t:'v'},tsp:{b:'ml',f:4.929,l:'tsp',t:'v'},floz:{b:'ml',f:29.574,l:'fl oz',t:'v'},ml:{b:'ml',f:1,l:'ml',t:'v'},l:{b:'ml',f:1000,l:'l',t:'v'},each:{b:'each',f:1,l:'each',t:'c'}};
+function toB(q,u){return q*((UM[u]&&UM[u].f)||1);}
+function cpu(i){var bq=toB(i.qty,i.unit);return bq>0?i.price/bq:0;}
+function fCPU(i){var c=cpu(i),m=UM[i.unit],bl=m?(m.b==='g'?'g':m.b==='ml'?'ml':'each'):'each';return '$'+c.toFixed(4)+'/'+bl;}
+function go(n,b){var target=document.getElementById('pane-'+n); if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); } if(n==='weekly')fillWD();}
+function upUL(){var u=document.getElementById('ip-u').value;document.getElementById('ip-ul').textContent=(UM[u]&&UM[u].l)||u;}
+function pvw(){var q=parseFloat(document.getElementById('ip-q').value),u=document.getElementById('ip-u').value,p=parseFloat(document.getElementById('ip-p').value),el=document.getElementById('ip-pv');if(!q||!p){el.style.display='none';return;}var c=p/toB(q,u),m=UM[u];el.style.display='block';el.innerHTML='Cost per '+(m?m.b:'unit')+': $'+c.toFixed(4)+' | Per 100'+(m?m.b:'unit')+': $'+(c*100).toFixed(3);}
+function addIng(){var name=document.getElementById('ip-n').value.trim(),qty=parseFloat(document.getElementById('ip-q').value),unit=document.getElementById('ip-u').value,price=parseFloat(document.getElementById('ip-p').value),store=document.getElementById('ip-s').value.trim();if(!name||!qty||!price){alert('Please fill in name, package size, and price.');return;}var idx=pantry.findIndex(function(i){return i.name.toLowerCase()===name.toLowerCase();});var item={id:idx>=0?pantry[idx].id:Date.now(),name:name,qty:qty,unit:unit,price:price,store:store};if(idx>=0)pantry[idx]=item;else pantry.push(item);saveState();renderP();clrIng();fillDD();}
+function clrIng(){['ip-n','ip-q','ip-p','ip-s'].forEach(function(id){document.getElementById(id).value='';});document.getElementById('ip-u').value='lb';upUL();document.getElementById('ip-pv').style.display='none';}
+function editIng(id){var i=pantry.find(function(x){return x.id===id;});if(!i)return;document.getElementById('ip-n').value=i.name;document.getElementById('ip-q').value=i.qty;document.getElementById('ip-u').value=i.unit;document.getElementById('ip-p').value=i.price;document.getElementById('ip-s').value=i.store||'';upUL();go('pantry',document.querySelector('.tab'));}
+function delIng(id){if(!confirm('Remove this ingredient?'))return;pantry=pantry.filter(function(i){return i.id!==id;});saveState();renderP();fillDD();}
+function renderP(){var el=document.getElementById('pantry-list');if(!pantry.length){el.innerHTML='<div class="emp"><i>🛒</i>No ingredients yet.</div>';return;}var cats={w:[],v:[],c:[]};pantry.forEach(function(i){var t=(UM[i.unit]&&UM[i.unit].t)||'c';cats[t].push(i);});var h='';[['w','By Weight'],['v','By Volume'],['c','By Count']].forEach(function(pair){if(!cats[pair[0]].length)return;h+='<div class="sdv"><span>'+pair[1]+'</span></div>';cats[pair[0]].forEach(function(i){h+='<div class="li"><div style="flex:1;min-width:0;"><div class="ln">'+i.name+'</div><div class="ld">'+i.qty+' '+((UM[i.unit]&&UM[i.unit].l)||i.unit)+' for $'+i.price.toFixed(2)+(i.store?' - '+i.store:'')+'</div><div class="ld" style="color:var(--sg);font-weight:600;">'+fCPU(i)+'</div></div><div style="display:flex;align-items:center;gap:4px;flex-shrink:0;"><button class="btn bgh" style="padding:4px 7px;font-size:11px;" onclick="editIng('+i.id+')">Edit</button><button class="bdel" onclick="delIng('+i.id+')">x</button></div></div>';});});el.innerHTML=h;}
+var rowIds=[];
+function fillDD(){document.querySelectorAll('.isel').forEach(function(s){var cv=s.value;s.innerHTML='<option value="">Select ingredient...</option>'+pantry.map(function(i){return'<option value="'+i.id+'"'+(i.id==cv?' selected':'')+'>'+i.name+'</option>';}).join('');});}
+function addRow(iId,qty,u){iId=iId||'';qty=qty||'';u=u||'g';var rid='r'+Date.now()+'_'+Math.floor(Math.random()*9999);rowIds.push(rid);var c=document.getElementById('rec-ings');var d=document.createElement('div');d.className='ir';d.id=rid;var opts=pantry.map(function(i){return'<option value="'+i.id+'"'+(i.id==iId?' selected':'')+'>'+i.name+'</option>';}).join('');var uOpts=Object.keys(UM).map(function(k){return'<option value="'+k+'"'+(k===u?' selected':'')+'>'+UM[k].l+'</option>';}).join('');d.innerHTML='<select class="isel" onchange="calcR()"><option value="">Select...</option>'+opts+'</select><input type="number" value="'+qty+'" placeholder="Amount" step="0.1" min="0" oninput="calcR()"><select onchange="calcR()">'+uOpts+'</select><button class="bdel" onclick="delRow(\''+rid+'\')">x</button>';c.appendChild(d);calcR();}
+function delRow(id){var el=document.getElementById(id);if(el)el.remove();rowIds=rowIds.filter(function(r){return r!==id;});calcR();}
+function clrR(){document.getElementById('rn').value='';document.getElementById('ry').value='1';document.getElementById('rec-ings').innerHTML='';rowIds=[];document.getElementById('ra').value='0.5';document.getElementById('rp').value='1';document.getElementById('rw').value='18';document.getElementById('rpaymode').value='sustainable';document.getElementById('rpw').value='18';document.getElementById('rrm').value='0.5';document.getElementById('rpk').value='0.50';document.getElementById('roh').value='2.00';document.getElementById('rmg').value='35';document.getElementById('mgl').textContent='35%';document.getElementById('rmode').value='core';document.getElementById('rmenu').value='5';addRow();syncPayMode();calcR();}
+function syncPayMode(){var trueRate=parseFloat(document.getElementById('rw').value)||0,mode=document.getElementById('rpaymode').value,target=trueRate;if(mode==='survival')target=trueRate*0.5;else if(mode==='sustainable')target=trueRate;else if(mode==='scale')target=trueRate*1.25;var el=document.getElementById('rpw');if(mode!=='custom'){el.value=(Math.round(target*100)/100).toFixed(2).replace(/\.00$/,'');}}
+function setCustomPay(){document.getElementById('rpaymode').value='custom';}
+function calcR(){
+  var yld=parseFloat(document.getElementById('ry').value)||1,
+      act=parseFloat(document.getElementById('ra').value)||0,
+      pas=parseFloat(document.getElementById('rp').value)||0,
+      wg=parseFloat(document.getElementById('rw').value)||18,
+      payRate=parseFloat(document.getElementById('rpw').value)||0,
+      pk=parseFloat(document.getElementById('rpk').value)||0,
+      oh=parseFloat(document.getElementById('roh').value)||0,
+      mg=parseFloat(document.getElementById('rmg').value)||35,
+      reality=parseFloat(document.getElementById('rrm').value)||0.5,
+      mode=document.getElementById('rmode').value||'core',
+      payMode=document.getElementById('rpaymode').value||'sustainable',
+      menuCount=parseFloat(document.getElementById('rmenu').value)||1,
+      ingTot=0,bkdn='';
+  document.querySelectorAll('#rec-ings .ir').forEach(function(row){
+    var iId=parseInt((row.querySelector('.isel')&&row.querySelector('.isel').value)||0),
+        qty=parseFloat((row.querySelectorAll('input')[0]&&row.querySelectorAll('input')[0].value)||0)||0,
+        useU=(row.querySelectorAll('select')[1]&&row.querySelectorAll('select')[1].value)||'g',
+        ing=pantry.find(function(i){return i.id===iId;});
+    if(!ing||!qty)return;
+    var pkT=UM[ing.unit]&&UM[ing.unit].t,useT=UM[useU]&&UM[useU].t,ic=0;
+    if(pkT===useT||useU===ing.unit) ic=cpu(ing)*toB(qty,useU);
+    else if(useU==='each'||ing.unit==='each') ic=cpu(ing)*qty;
+    ingTot+=ic;
+    bkdn+=ing.name+' ('+qty+' '+((UM[useU]&&UM[useU].l)||useU)+'): $'+ic.toFixed(3)+'<br>';
+  });
+
+  var truePassiveLabor=pas*wg*reality,
+      trueActiveLabor=act*wg,
+      trueLabor=trueActiveLabor+truePassiveLabor,
+      paidPassiveLabor=pas*payRate*reality,
+      paidActiveLabor=act*payRate,
+      paidLabor=paidActiveLabor+paidPassiveLabor,
+      laborHours=(act+pas*reality),
+      reinvest=Math.max(0,trueLabor-paidLabor),
+      cashBatch=ingTot+(pk*yld)+oh,
+      cashItem=cashBatch/yld,
+      fullBatch=cashBatch+trueLabor,
+      fullItem=fullBatch/yld,
+      paidBatch=cashBatch+paidLabor,
+      paidItem=paidBatch/yld,
+      roleMap={
+        traffic:{floorActive:0.10,floorPassive:0.00, marketActive:0.30, marketPassive:0.08, marketMargin:0.06, refCap:1.18, goalCap:1.30, label:'traffic builder / staple item'},
+        core:{floorActive:0.18,floorPassive:0.04, marketActive:0.50, marketPassive:0.15, marketMargin:0.12, refCap:1.28, goalCap:1.45, label:'core product / balanced item'},
+        premium:{floorActive:0.28,floorPassive:0.08, marketActive:0.75, marketPassive:0.28, marketMargin:0.18, refCap:1.45, goalCap:1.70, label:'premium / specialty item'}
+      },
+      role=roleMap[mode]||roleMap.core;
+
+  var floorBase=cashItem + (paidActiveLabor/yld)*role.floorActive + (paidPassiveLabor/yld)*role.floorPassive,
+      floor=Math.max(cashItem*1.03, floorBase),
+      marketBase=cashItem + (paidActiveLabor/yld)*role.marketActive + (paidPassiveLabor/yld)*role.marketPassive,
+      market=Math.max(floor, marketBase/(1-role.marketMargin)),
+      blendedReference=(paidItem*0.65)+(fullItem*0.35),
+      fullReference=Math.max(market*1.08, Math.min(blendedReference, market*role.refCap)),
+      goalBase=fullReference*(1+(mg/100*0.35)),
+      ideal=Math.max(fullReference*1.08, Math.min(goalBase, market*role.goalCap)),
+      actualHourly=laborHours>0 ? paidLabor/laborHours : 0,
+      targetHourly=laborHours>0 ? trueLabor/laborHours : 0,
+      highIdeal=ideal>market*1.5;
+
+  document.getElementById('ri').textContent='$'+cashItem.toFixed(2);
+  document.getElementById('rc').textContent='$'+fullReference.toFixed(2);
+  document.getElementById('rfloor').textContent='$'+floor.toFixed(2);
+  document.getElementById('rsp').textContent='$'+market.toFixed(2);
+  document.getElementById('rideal').textContent='$'+ideal.toFixed(2);
+  document.getElementById('rpf').textContent='$'+(reinvest/yld).toFixed(2);
+  document.getElementById('rbk').innerHTML=bkdn
+    ? 'Breakdown per batch:<br>'+bkdn+
+      'Chosen pay labor: $'+paidLabor.toFixed(2)+' | True labor value: $'+trueLabor.toFixed(2)+
+      ' | Reinvested / unpaid labor: $'+reinvest.toFixed(2)+' | Overhead: $'+oh.toFixed(2)
+    : '';
+
+  var ins=document.getElementById('rins');
+  var which=document.getElementById('rwhich');
+  var menuWarn=document.getElementById('rmenuwarn');
+  if(!fullItem){
+    ins.innerHTML='Add your ingredients to see your real cost.';
+    ins.className='ins';
+    which.innerHTML='Start with <strong>Market Price</strong> for your menu. Only open the extra numbers if you want to see your hard minimum, true full-cost target, or how much you are reinvesting.';
+    menuWarn.style.display='none';
+    return;
+  }
+
+  if(menuCount>6){
+    menuWarn.style.display='block';
+    menuWarn.innerHTML='You have '+menuCount+' products on the weekly menu. That is how bakers turn a clean system into chaos. Tighten the menu unless there is a real reason not to.';
+  }else{
+    menuWarn.style.display='none';
+  }
+
+  if(reinvest>0 && payMode==='survival'){
+    ins.className='ins';
+    ins.innerHTML='You are choosing to reinvest labor instead of paying yourself fully. That is fine for a season, but call it what it is. You are leaving about $'+reinvest.toFixed(2)+' per batch in the business and paying yourself about $'+actualHourly.toFixed(2)+'/hr instead of $'+targetHourly.toFixed(2)+'/hr.';
+  }else if(mode==='traffic'){
+    ins.className='ins';
+    ins.innerHTML='This is a staple or traffic-builder item. Use <strong>Market Price</strong> on your menu. <strong>Floor Price</strong> is the hard minimum. <strong>Long-Term Goal Price</strong> is a stretch target and will often be too high for a basic item.';
+  }else if(highIdeal){
+    ins.className='ins';
+    ins.innerHTML='Your ideal price is much higher than your market price. That does not mean the calculator is broken. It means full-pay math and market demand are not the same thing. Use <strong>Market Price</strong> on the menu and let stronger products carry more margin.';
+  }else{
+    ins.className='ins gd';
+    ins.innerHTML='This range is usable. Put <strong>Market Price</strong> on your menu, protect <strong>Floor Price</strong> as your minimum, and treat <strong>Long-Term Goal Price</strong> as the target to grow toward.';
+  }
+
+  which.innerHTML=`<strong>Which number should you actually use?</strong><br>
+  <strong>Market Price:</strong> Use this on your menu almost every time.<br>
+  <strong>Floor Price:</strong> Hard minimum only. Do not build your menu here unless you want thin margins.<br>
+  <strong>Long-Term Goal Price:</strong> Long-term target once your demand, efficiency, or positioning gets stronger.<br>
+  <strong>Quick rule:</strong> If you are stuck, price at Market.`;
+}
+
+function saveR(){var name=document.getElementById('rn').value.trim();if(!name){alert('Give your recipe a name first.');return;}var sell=parseFloat(document.getElementById('rsp').textContent.replace('$',''))||0,prof=parseFloat(document.getElementById('rpf').textContent.replace('$',''))||0,cost=parseFloat(document.getElementById('rc').textContent.replace('$',''))||0,floor=parseFloat(document.getElementById('rfloor').textContent.replace('$',''))||0,ideal=parseFloat(document.getElementById('rideal').textContent.replace('$',''))||0,cash=parseFloat(document.getElementById('ri').textContent.replace('$',''))||0;if(!sell){alert('Add ingredients and calculate first.');return;}var ings=[];document.querySelectorAll('#rec-ings .ir').forEach(function(row){var iId=parseInt((row.querySelector('.isel')&&row.querySelector('.isel').value)||0),qty=parseFloat((row.querySelectorAll('input')[0]&&row.querySelectorAll('input')[0].value)||0)||0,useU=(row.querySelectorAll('select')[1]&&row.querySelectorAll('select')[1].value)||'g',ing=pantry.find(function(i){return i.id===iId;});if(ing&&qty)ings.push({iId:iId,qty:qty,useU:useU,name:ing.name});});var marketProfit=Math.max(0,sell-floor), marginPct=sell>0?(marketProfit/sell*100):0; var rec={id:Date.now(),name:name,sell:sell,market:sell,prof:prof,marketProfit:marketProfit,marginPct:marginPct,cost:cost,cash:cash,floor:floor,ideal:ideal,yld:parseFloat(document.getElementById('ry').value),act:parseFloat(document.getElementById('ra').value),pas:parseFloat(document.getElementById('rp').value),wg:parseFloat(document.getElementById('rw').value),payMode:document.getElementById('rpaymode').value,payRate:parseFloat(document.getElementById('rpw').value)||0,pk:parseFloat(document.getElementById('rpk').value),oh:parseFloat(document.getElementById('roh').value),mg:parseFloat(document.getElementById('rmg').value),reality:parseFloat(document.getElementById('rrm').value)||0.5,mode:(document.getElementById('rmode').value||'core'),menuCount:parseFloat(document.getElementById('rmenu').value)||5,ings:ings,saved:new Date().toLocaleDateString()};var idx=recipes.findIndex(function(r){return r.name.toLowerCase()===name.toLowerCase();});if(idx>=0){rec.id=recipes[idx].id;recipes[idx]=rec;}else recipes.push(rec);saveState();renderS();fillWD();alert(name+' saved! Find it in the Saved tab and Weekly tab.');}
+
+var ohF={weekly:1,monthly:1/4.33,annual:1/52,perbake:1};
+function setOHMsg(msg,kind){var el=document.getElementById('oh-msg');if(!el)return;el.style.display=msg?'block':'none';el.className='ins'+(kind==='error'?' dn':kind==='good'?' gd':'');el.textContent=msg||'';}
+function addOH(){
+  try{
+    var nameEl=document.getElementById('on'), amtEl=document.getElementById('oa'), freqEl=document.getElementById('of'), catEl=document.getElementById('oc');
+    var name=nameEl?String(nameEl.value||'').trim():'';
+    var raw=amtEl?String(amtEl.value||'').replace(/[$,\s]/g,''):'';
+    var amt=parseFloat(raw);
+    var freq=freqEl&&freqEl.value?freqEl.value:'weekly';
+    var cat=catEl&&catEl.value?catEl.value:'other';
+    if(!name || !Number.isFinite(amt) || amt<=0){setOHMsg('Enter an expense name and an amount greater than 0.','error');return false;}
+    var expense={id:(Date.now()+Math.floor(Math.random()*100000)),name:name,amt:amt,freq:freq,cat:cat};
+    overheads=[].concat(overheads||[]);
+    overheads.push(expense);
+    saveState();
+    if(typeof persist==='function'){try{persist();}catch(e){}}
+    if(nameEl)nameEl.value='';
+    if(amtEl)amtEl.value='';
+    if(freqEl)freqEl.value='weekly';
+    if(catEl)catEl.value='market';
+    renderOH();
+    fillWD();
+    calcW();
+    setOHMsg('Expense added. You now have '+overheads.length+' overhead expense'+(overheads.length===1?'':'s')+'.','good');
+    return false;
+  }catch(err){
+    console.error(err);
+    setOHMsg('Something went wrong adding the expense.','error');
+    return false;
+  }
+}
+function delOH(id){overheads=overheads.filter(function(o){return o.id!==id;});saveState();renderOH();}
+function reOH(){var bpw=parseFloat(document.getElementById('ohc').value)||1,wt=overheads.reduce(function(s,o){return s+(o.amt*(ohF[o.freq]||1));},0);var wEl=document.getElementById('oht'),pEl=document.getElementById('ohp');if(wEl)wEl.textContent='$'+wt.toFixed(2);if(pEl)pEl.textContent='$'+(wt/bpw).toFixed(2);}
+function renderOH(){var el=document.getElementById('oh-list');if(!overheads.length){el.innerHTML='<div class="emp"><i>📋</i>No expenses yet.</div>';document.getElementById('oh-sum').style.display='none';return;}document.getElementById('oh-sum').style.display='block';el.innerHTML=overheads.map(function(o){return'<div class="li"><div style="flex:1;"><div class="ln">'+o.name+'</div><div class="ld">$'+o.amt.toFixed(2)+' '+o.freq+'</div><div class="ld" style="color:var(--sg);font-weight:600;">$'+(o.amt*(ohF[o.freq]||1)).toFixed(2)+'/week equiv.</div></div><button class="bdel" onclick="delOH('+o.id+')">x</button></div>';}).join('');reOH();}
+function editS(id){var rec=recipes.find(function(r){return r.id===id;});if(!rec)return;document.getElementById('rn').value=rec.name;document.getElementById('ry').value=rec.yld;document.getElementById('ra').value=rec.act;document.getElementById('rp').value=rec.pas;document.getElementById('rw').value=rec.wg;document.getElementById('rpaymode').value=rec.payMode||'sustainable';document.getElementById('rpw').value=rec.payRate!=null?rec.payRate:rec.wg;document.getElementById('rpk').value=rec.pk;document.getElementById('roh').value=rec.oh;document.getElementById('rmg').value=rec.mg;document.getElementById('mgl').textContent=rec.mg+'%';document.getElementById('rrm').value=rec.reality||0.5;document.getElementById('rmode').value=rec.mode||'core';document.getElementById('rmenu').value=rec.menuCount||5;document.getElementById('rrm').value=(rec.reality||0.5).toString();document.getElementById('rec-ings').innerHTML='';syncPayMode();rowIds=[];rec.ings.forEach(function(i){addRow(i.iId,i.qty,i.useU);});go('recipe',document.querySelectorAll('.tab')[1]);}
+function delS(id){if(!confirm('Delete this recipe?'))return;recipes=recipes.filter(function(r){return r.id!==id;});saveState();renderS();}
+function renderS(){var el=document.getElementById('saved-list'),mc=document.getElementById('menu-card');if(!recipes.length){el.innerHTML='<div class="emp"><i>📁</i>No saved recipes yet.</div>';mc.style.display='none';return;}el.innerHTML=recipes.map(function(rec){var menuPrice=Number(typeof rec.market==='number'?rec.market:rec.sell)||0;var floor=Number(typeof rec.floor==='number'?rec.floor:rec.cost)||0;var mp=Number.isFinite(rec.marginPct)?rec.marginPct:(menuPrice>0?Math.max(0,(menuPrice-floor)/menuPrice*100):0);mp=mp.toFixed(0);var tc=mp>=30?'ts':mp>=20?'tg':'tr';return'<div class="li" style="flex-direction:column;align-items:flex-start;gap:6px;padding:11px;"><div style="display:flex;align-items:center;justify-content:space-between;width:100%;"><div style="font-size:14px;font-weight:600;">'+rec.name+'</div><span class="tag '+tc+'">'+mp+'% margin</span></div><div style="display:flex;gap:12px;flex-wrap:wrap;"><div><div style="font-size:9px;color:var(--tm);text-transform:uppercase;">Full-Cost Ref</div><div style="font-family:Playfair Display,serif;font-size:15px;font-weight:700;">$'+Number(rec.cost||0).toFixed(2)+'</div></div><div><div style="font-size:9px;color:var(--tm);text-transform:uppercase;">Floor</div><div style="font-family:Playfair Display,serif;font-size:15px;font-weight:700;">$'+floor.toFixed(2)+'</div></div><div><div style="font-size:9px;color:var(--tm);text-transform:uppercase;">Market</div><div style="font-family:Playfair Display,serif;font-size:15px;font-weight:700;color:var(--sg);">$'+menuPrice.toFixed(2)+'</div></div><div><div style="font-size:9px;color:var(--tm);text-transform:uppercase;">Goal</div><div style="font-family:Playfair Display,serif;font-size:15px;font-weight:700;color:var(--bm);">$'+Number(rec.ideal||menuPrice).toFixed(2)+'</div></div><div><div style="font-size:9px;color:var(--tm);text-transform:uppercase;">Yield</div><div style="font-family:Playfair Display,serif;font-size:15px;font-weight:700;color:var(--tm);">'+rec.yld+'</div></div></div><div style="display:flex;gap:6px;"><button class="btn bgh" style="font-size:11px;padding:5px 9px;" onclick="editS('+rec.id+')">Edit</button><button class="bdel" onclick="delS('+rec.id+')">x Remove</button></div></div>';}).join('');mc.style.display='block';document.getElementById('menu-items').innerHTML=recipes.map(function(r){var menuPrice=(typeof r.market==='number'?r.market:r.sell);return'<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--br);"><span style="font-size:13px;font-weight:500;">'+r.name+'</span><span style="font-family:Playfair Display,serif;font-size:15px;font-weight:700;color:var(--sg);">$'+Number(menuPrice||0).toFixed(2)+'</span></div>';}).join('');fillWD();}
+function fillWD(){var s=document.getElementById('wrec');if(!s)return;var cv=s.value;s.innerHTML='<option value="">-- or enter manually below --</option>'+recipes.map(function(r){var menuPrice=(typeof r.market==='number'?r.market:r.sell);return'<option value="'+r.id+'"'+(String(r.id)===String(cv)?' selected':'')+'>'+r.name+' ($'+Number(menuPrice||0).toFixed(2)+')</option>';}).join('');}
+function loadWR(){var raw=document.getElementById('wrec').value;if(!raw)return;var id=String(raw);var r=recipes.find(function(x){return String(x.id)===id;});if(!r)return;var menuPrice=(typeof r.market==='number'?r.market:r.sell)||0;var itemCost=(typeof r.floor==='number'?r.floor:(typeof r.cash==='number'?r.cash:r.cost))||0;document.getElementById('wpr').value=Number(menuPrice).toFixed(2);document.getElementById('wco').value=Number(itemCost).toFixed(2);calcW();}
+function calcW(){
+  var pr=parseFloat(document.getElementById('wpr').value)||0,
+      co=parseFloat(document.getElementById('wco').value)||0,
+      un=parseFloat(document.getElementById('wun').value)||0,
+      cy=parseFloat(document.getElementById('wcy').value)||4,
+      menuCt=parseFloat(document.getElementById('wmc').value)||1,
+      rw=pr*un,pw=(pr-co)*un,rm=rw*cy,pm=pw*cy,ry=rm*12;
+  document.getElementById('wrows').innerHTML=[
+    ['Revenue per bake cycle','$'+rw.toFixed(2)],
+    ['Gross profit per bake cycle','$'+pw.toFixed(2)],
+    ['Monthly revenue','$'+rm.toFixed(2)],
+    ['Monthly gross profit','$'+pm.toFixed(2)],
+    ['Annual projection','$'+Math.round(ry).toLocaleString(),true]
+  ].map(function(a){
+    return'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--br);"><span style="font-size:12px;color:'+(a[2]?'var(--bd)':'var(--tm)')+(a[2]?';font-weight:600;':'')+'">'+a[0]+'</span><span style="font-family:Playfair Display,serif;font-size:'+(a[2]?18:15)+'px;font-weight:700;color:'+(a[2]?'var(--go)':'var(--bd)')+';">'+a[1]+'</span></div>';
+  }).join('');
+  var ins=document.getElementById('wins');
+  if(menuCt>6){
+    ins.className='ins dn';
+    ins.innerHTML='You have '+menuCt+' products in the weekly menu. That is menu creep. A bloated menu slows prep, increases waste, and kills consistency. Tighten your core menu first.';
+  }else if(pm<2000){
+    ins.className='ins dn';
+    ins.innerHTML='This is still below the $2,000/month line. It can help, but it is not replacing meaningful income yet. Either raise price, improve margin, or move more units without blowing up your schedule.';
+  }else if(pm<5000){
+    ins.className='ins';
+    ins.innerHTML='This sits in the real-business zone: about $'+pm.toFixed(0)+'/month gross profit. Protect your system, keep the menu simple, and repeat weekly.';
+  }else{
+    ins.className='ins gd';
+    ins.innerHTML='This is scaling territory at about $'+pm.toFixed(0)+'/month gross profit. Good. Now protect labor, route efficiency, and your sanity before adding more products.';
+  }
+  document.getElementById('wgrow').innerHTML=[0,1,2,3].map(function(i){
+    var u=un+i*5,mp=(pr-co)*u*cy;
+    return'<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--br);"><span style="font-size:12px;color:var(--tm);">'+u+' units x '+cy+' cycles</span><span style="font-family:Playfair Display,serif;font-size:15px;font-weight:700;">$'+mp.toFixed(0)+'/mo profit</span></div>';
+  }).join('');
+}
+var PF_STAGES={launch:{label:'Setup / Validation',profit:1,owner:10,tax:15,opex:74,help:'Use this when you are just launching, testing demand, or still inconsistent. Goal: prove the model and build the habit, not drain the business.',trigger:'Move up after 4 consistent weeks of paid orders.'},consistent:{label:'Consistent Orders',profit:5,owner:25,tax:15,opex:55,help:'Use this once orders are steady and your menu is actually moving. Goal: begin paying yourself like a real business owner.',trigger:'Move up when you are selling near capacity or have strong repeat buyers.'},scaling:{label:'Scaling',profit:10,owner:40,tax:15,opex:35,help:'Use this when demand is strong and your systems are tighter. Goal: support better owner pay while still leaving room for growth.',trigger:'You are nearing capacity, hiring help, or turning away orders.'},custom:{label:'Custom',profit:null,owner:null,tax:null,opex:null,help:'Custom is for when you know exactly why you are changing the defaults. Do not use custom just because you wish the math looked nicer.',trigger:'Custom should be intentional, not emotional.'}};
+function setPFCustomIfNeeded(){var st=document.getElementById('pfstage');if(st&&st.value!=='custom'){st.value='custom';}updatePFStageHelp();}
+function updatePFStageHelp(){var st=(document.getElementById('pfstage')||{}).value||'launch',cfg=PF_STAGES[st],el=document.getElementById('pfstagehelp');if(el&&cfg){el.className='ins';el.innerHTML='<strong>'+cfg.label+':</strong> '+cfg.help+'<br><strong>Move up when:</strong> '+cfg.trigger;}}
+function applyPFStage(){var st=document.getElementById('pfstage').value,cfg=PF_STAGES[st];if(cfg&&st!=='custom'){document.getElementById('pfp').value=cfg.profit;document.getElementById('pfo').value=cfg.owner;document.getElementById('pft').value=cfg.tax;document.getElementById('pfe').value=cfg.opex;}updatePFStageHelp();calcPF();}
+function calcPF(){var st=(document.getElementById('pfstage')||{}).value||'launch',rev=parseFloat(document.getElementById('pfr').value)||0,pp=parseFloat(document.getElementById('pfp').value)||0,op=parseFloat(document.getElementById('pfo').value)||0,tp=parseFloat(document.getElementById('pft').value)||0,ep=parseFloat(document.getElementById('pfe').value)||0,tot=pp+op+tp+ep,wn=document.getElementById('pfwarn');if(tot!==100){wn.style.display='block';wn.innerHTML='Allocations add up to '+tot+'% — must be exactly 100%.';}else{wn.style.display='none';}
+document.getElementById('pfbars').innerHTML=[{l:"Owner's Pay",pct:op,c:'#D4A030'},{l:'Profit',pct:pp,c:'#4A6741'},{l:'Taxes',pct:tp,c:'#C04B2D'},{l:'Operations',pct:ep,c:'#7A3E1A'}].map(function(b){return'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><div style="font-size:11px;font-weight:500;color:var(--bm);width:100px;flex-shrink:0;">'+b.l+'</div><div style="flex:1;height:9px;background:var(--br);border-radius:20px;overflow:hidden;"><div style="width:'+b.pct+'%;height:100%;background:'+b.c+';border-radius:20px;"></div></div><div style="font-size:12px;font-weight:600;color:var(--bd);width:68px;text-align:right;flex-shrink:0;">$'+(rev*b.pct/100).toFixed(2)+'</div></div>';}).join('');
+document.getElementById('pfchk').textContent='Total: '+tot+'%';
+var ins=document.getElementById('pfins'),next=document.getElementById('pfnext');
+if(tot===100&&rev>0){var ow=rev*op/100,pf=rev*pp/100,tx=rev*tp/100,ox=rev*ep/100,cy=parseFloat(document.getElementById('wcy').value)||4,eff=(ow/rev*100).toFixed(0);ins.className=op>=25?'ins gd':'ins';ins.innerHTML='At this stage, you pay yourself <strong>$'+ow.toFixed(2)+'</strong> this week, set aside <strong>$'+tx.toFixed(2)+'</strong> for taxes, keep <strong>$'+pf.toFixed(2)+'</strong> as profit, and leave <strong>$'+ox.toFixed(2)+'</strong> to run the business. Over '+cy+' cycles this month, owner pay would be about <strong>$'+(ow*cy).toFixed(2)+'</strong>.';
+if(st==='launch'){next.className='ins';next.innerHTML='You are in launch mode. Good. Stop fantasizing about big owner pay before the business is stable. Build 4 steady weeks first, then move up.';}
+else if(st==='consistent'){next.className='ins gd';next.innerHTML='You are in consistent mode. At '+eff+'% owner pay, the business should be proving it can pay you without starving operations. If it cannot, pricing, product mix, or costs need work.';}
+else if(st==='scaling'){next.className='ins gd';next.innerHTML='You are in scaling mode. These percentages assume stronger demand and tighter systems. If operations still feel starved here, you are not actually ready to scale yet.';}
+else{next.className='ins';next.innerHTML='Custom mode is active. Make sure you changed this for a real reason, not because the defaults hurt your feelings.';}
+}else{ins.innerHTML='';next.innerHTML='';}}
+
+var CB=[{id:'ch1',n:'Farm Stand or Porch Pickup',h:'Set one consistent weekly pickup window — same day, same time. Customers order by your cutoff, pick up on your delivery day.',t:'A cooler bag with names on orders and a payment QR code is all you need to start.',pr:['sub','town']},{id:'ch2',n:'Farmers Market or Pop-Up Market',h:'Apply for a stall and show up every single week — same booth, same products. Build regulars. Bring a Simply Bread signup card so customers can order between markets.',t:'Consistency beats everything. The baker who shows up every week builds a following. The occasional baker does not.',pr:['rural','town','sub','urban']},{id:'ch3',n:'Local Boutiques, Shops, or Mercantiles',h:'Walk in, introduce yourself, bring samples. Ask if they would like to carry your bread weekly. Deliver the same day every week. I stock 4 locations every Friday.',t:'Local shops want local products. You are not asking for a favor — you are offering something their customers already want.',pr:['rural','town','sub','urban']},{id:'ch4',n:'Local Delivery Route',h:'Map your drops into one efficient route on one set day. Bake the day before, deliver the next day. Same locations, same day, every week.',t:'Three to four stops is easy to manage. More than that and weigh whether the time cost is worth the revenue.',pr:['rural','town','sub']},{id:'ch5',n:'Workplaces or Offices',h:'Find someone you know in a 20-plus person office. Give them a sample box to share. One office contact can mean 8 to 12 consistent orders every week.',t:'Take care of your office ambassador and they will keep orders coming.',pr:['sub','urban','town']},{id:'ch6',n:'Church or Community Organization',h:'Tell your community what you are doing. Bring samples. Share your Simply Bread link in your group chat or bulletin. These people already trust you.',t:'This is where most home bakers get their very first orders. Do not overthink it.',pr:['rural','town','sub','urban']},{id:'ch7',n:'Wholesale or Events',h:'Add this after your weekly system is consistent. Wholesale means bulk at a reduced price. Price it correctly so it is still profitable.',t:'Know your wholesale minimum before quoting anyone. Run it through your cost calculator first.',pr:['town','sub','urban']},{id:'ch8',n:'Online Orders via Simply Bread',h:'Set up your free account, post your menu, share your link everywhere. Customers sign up once and can order every week.',t:'Simply Bread works on top of every other channel. Store locations, markets, farm stand — handles individual orders alongside all of it.',pr:['rural','town','sub','urban']}];
+var CP={rural:['ch8','ch6','ch2','ch3','ch4','ch1','ch5','ch7'],town:['ch6','ch8','ch1','ch2','ch3','ch4','ch5','ch7'],sub:['ch1','ch8','ch6','ch5','ch2','ch3','ch4','ch7'],urban:['ch8','ch6','ch1','ch5','ch2','ch3','ch4','ch7']};
+function calcCh(){var loc=document.getElementById('chloc').value,anyOn=false,ck={};CB.forEach(function(c){var v=document.getElementById(c.id)&&document.getElementById(c.id).checked;ck[c.id]=v;if(v)anyOn=true;});if(!loc&&!anyOn)return;var card=document.getElementById('ch-res');card.style.display='block';var num=Object.values(ck).filter(Boolean).length,h='';var lm={rural:'<div class="ins" style="margin-bottom:10px;"><strong>Rural is my situation too.</strong> No foot traffic, far from town. It just shapes which channels you build first.</div>',town:'<div class="ins" style="margin-bottom:10px;"><strong>Small town is a real advantage.</strong> You can become the known home baker in your community fast.</div>',sub:'<div class="ins" style="margin-bottom:10px;"><strong>Suburban gives you options.</strong> Pick one starting channel and build from there.</div>',urban:'<div class="ins" style="margin-bottom:10px;"><strong>Urban means more competition but more customers.</strong> Your edge is the personal relationship — not price.</div>'};if(loc&&lm[loc])h+=lm[loc];if(num>3)h+='<div class="ins dn" style="margin-bottom:10px;">You have checked '+num+' channels. Start with 1 to 2 for your first 90 days. One channel done well is a business. Five done poorly is chaos.</div>';var pr=CP[loc]||['ch8','ch6','ch1','ch2','ch3','ch4','ch5','ch7'],ord=pr.filter(function(k){return ck[k];});if(!ord.length){h+='<p style="font-size:12px;color:var(--tm);padding:7px 0;">Check the channels available to you above to see your path.</p>';}else{ord.forEach(function(k,i){var ch=CB.find(function(c){return c.id===k;});if(!ch)return;h+='<div class="li" style="flex-direction:column;align-items:flex-start;gap:6px;padding:12px;margin-bottom:6px;"><div style="display:flex;align-items:center;gap:8px;width:100%;"><div style="background:'+(i===0?'var(--go)':'var(--br)')+';color:'+(i===0?'var(--bd)':'var(--tm)')+';width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">'+(i+1)+'</div><div style="font-size:13px;font-weight:600;color:var(--bd);">'+ch.n+'</div>'+(i===0?'<span class="tag tg" style="margin-left:auto;">Start here</span>':'')+'</div><div style="font-size:12px;line-height:1.6;color:var(--tx);padding-left:28px;">'+ch.h+'</div><div style="font-size:11px;color:var(--bm);background:rgba(181,100,42,0.08);padding:7px 9px;border-radius:6px;margin-left:28px;line-height:1.5;">Tip: '+ch.t+'</div></div>';});}h+='<div class="htip" style="margin-top:4px;">The system is always the same — weekly menu, bake what is ordered, deliver on a set day, repeat. The channel is just how products reach customers. What I teach works whether you have a farm stand, a market booth, store locations, or all three.</div>';document.getElementById('ch-adv').innerHTML=h;}
+hydrate();
+function storageKey(){return 'homebakeryCalculatorPremiumV2';}
+function showSave(msg,bad){var el=document.getElementById('saveFlash');if(!el)return;el.textContent=msg||'Saved';el.style.background=bad?'var(--rs)':'var(--bd)';el.classList.add('on');clearTimeout(window.__saveFlashTimer);window.__saveFlashTimer=setTimeout(function(){el.classList.remove('on');},1400);}
+function persist(){var payload={pantry:pantry,recipes:recipes,overheads:overheads};try{localStorage.setItem(storageKey(),JSON.stringify(payload));var pill=document.getElementById('autosavePill');if(pill){pill.className='statuspill';pill.textContent='● autosaved';}showSave('Saved');}catch(e){var pill=document.getElementById('autosavePill');if(pill){pill.className='statuspill bad';pill.textContent='● save failed';}}}
+function hydrate(){try{var raw=localStorage.getItem(storageKey());if(!raw)return;var data=JSON.parse(raw)||{};pantry=Array.isArray(data.pantry)?data.pantry:[];recipes=Array.isArray(data.recipes)?data.recipes:[];overheads=Array.isArray(data.overheads)?data.overheads:[];}catch(e){console.error(e);}}
+function exportData(){var payload={exportedAt:new Date().toISOString(),pantry:pantry,recipes:recipes,overheads:overheads};var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='homebakery-calculator-data.json';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},800);showSave('Data exported');}
+function importData(event){var file=event.target.files&&event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(){try{var data=JSON.parse(reader.result);pantry=Array.isArray(data.pantry)?data.pantry:[];recipes=Array.isArray(data.recipes)?data.recipes:[];overheads=Array.isArray(data.overheads)?data.overheads:[];renderP();renderOH();renderS();fillDD();fillWD();if(!document.querySelectorAll('#rec-ings .ir').length){addRow();}calcR();calcW();calcPF();persist();showSave('Data imported');}catch(e){showSave('Import failed',true);alert('That file is not valid calculator data.');}};reader.readAsText(file);event.target.value='';}
+function resetAllData(){if(!confirm('Delete all pantry items, recipes, and overhead data from this browser?'))return;pantry=[];recipes=[];overheads=[];document.getElementById('rec-ings').innerHTML='';rowIds=[];addRow();renderP();renderOH();renderS();fillDD();fillWD();calcR();calcW();calcPF();persist();showSave('All data reset',true);}
+var _origAddIng=addIng;addIng=function(){_origAddIng();persist();};
+var _origDelIng=delIng;delIng=function(id){_origDelIng(id);persist();};
+var _origSaveR=saveR;saveR=function(){_origSaveR();persist();};
+var _origDelS=delS;delS=function(id){_origDelS(id);persist();fillWD();};
+var _origAddOH=addOH;addOH=function(){var ok=_origAddOH();persist();return ok;};
+var _origDelOH=delOH;delOH=function(id){_origDelOH(id);persist();};
+var _origClrR=clrR;clrR=function(){_origClrR();persist();};
+document.addEventListener('input',function(e){if(e.target.matches('input, select')){clearTimeout(window.__persistTimer);window.__persistTimer=setTimeout(persist,250);}});
+hydrate();
+renderP();renderOH();renderS();fillDD();if(!document.querySelectorAll('#rec-ings .ir').length){addRow();}calcR();calcW();fillWD();applyPFStage();
+
+(function(){
+  var btn=document.getElementById('add-expense-btn');
+  if(btn){btn.addEventListener('click',function(e){e.preventDefault();addOH();});}
+  ['on','oa'].forEach(function(id){var el=document.getElementById(id); if(el){el.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addOH();}});}});
+})();
+
+</script>
+</body>
+</html>
