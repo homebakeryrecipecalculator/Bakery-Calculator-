@@ -118,6 +118,22 @@ body{padding-bottom:24px;}
   <div class="cs">Built to work for breads, cookies, cakes, pastries, bars, cupcakes, and more. Everything stays on one page so it actually works on phone previews and picky browsers.</div>
 </div>
 
+<div class="card" style="max-width:760px;margin:14px auto 0;">
+  <div class="ct">Save & Backup Your Bakery Data</div>
+  <div class="cs"><strong>Important:</strong> Your pantry, recipes, and expenses save automatically in this browser on this device. This is not cloud storage. If you switch devices, clear browser data, or use private mode, your data can be lost. Export a backup regularly.</div>
+  <div class="actionrow">
+    <button class="btn bgo" type="button" onclick="exportData()">Export Backup File</button>
+    <label class="btn bgh" style="cursor:pointer;">
+      Import Backup File
+      <input type="file" accept="application/json,.json" onchange="importData(event)" style="display:none;">
+    </label>
+    <button class="btn bgh" type="button" onclick="resetAllData()">Reset All Data</button>
+  </div>
+  <div class="ghostbox" style="margin-top:10px;">
+    <strong>Student reminder:</strong> Export your backup file after adding new recipes or updating pantry prices. Save the file to Google Drive, iCloud, Dropbox, or email it to yourself.
+  </div>
+</div>
+
 <div id="saveFlash" class="saveflash">Saved</div>
 
 <!-- PANTRY -->
@@ -649,7 +665,7 @@ function storageKey(){return 'homebakeryCalculatorPremiumV2';}
 function showSave(msg,bad){var el=document.getElementById('saveFlash');if(!el)return;el.textContent=msg||'Saved';el.style.background=bad?'var(--rs)':'var(--bd)';el.classList.add('on');clearTimeout(window.__saveFlashTimer);window.__saveFlashTimer=setTimeout(function(){el.classList.remove('on');},1400);}
 function persist(){var payload={pantry:pantry,recipes:recipes,overheads:overheads};try{localStorage.setItem(storageKey(),JSON.stringify(payload));var pill=document.getElementById('autosavePill');if(pill){pill.className='statuspill';pill.textContent='● autosaved';}showSave('Saved');}catch(e){var pill=document.getElementById('autosavePill');if(pill){pill.className='statuspill bad';pill.textContent='● save failed';}}}
 function hydrate(){try{var raw=localStorage.getItem(storageKey());if(!raw)return;var data=JSON.parse(raw)||{};pantry=Array.isArray(data.pantry)?data.pantry:[];recipes=Array.isArray(data.recipes)?data.recipes:[];overheads=Array.isArray(data.overheads)?data.overheads:[];}catch(e){console.error(e);}}
-function exportData(){var payload={exportedAt:new Date().toISOString(),pantry:pantry,recipes:recipes,overheads:overheads};var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='homebakery-calculator-data.json';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},800);showSave('Data exported');}
+function exportData(){var payload={exportedAt:new Date().toISOString(),pantry:pantry,recipes:recipes,overheads:overheads};var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='homebakery-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},800);showSave('Data exported');}
 function importData(event){var file=event.target.files&&event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(){try{var data=JSON.parse(reader.result);pantry=Array.isArray(data.pantry)?data.pantry:[];recipes=Array.isArray(data.recipes)?data.recipes:[];overheads=Array.isArray(data.overheads)?data.overheads:[];renderP();renderOH();renderS();fillDD();fillWD();if(!document.querySelectorAll('#rec-ings .ir').length){addRow();}calcR();calcW();calcPF();persist();showSave('Data imported');}catch(e){showSave('Import failed',true);alert('That file is not valid calculator data.');}};reader.readAsText(file);event.target.value='';}
 function resetAllData(){if(!confirm('Delete all pantry items, recipes, and overhead data from this browser?'))return;pantry=[];recipes=[];overheads=[];document.getElementById('rec-ings').innerHTML='';rowIds=[];addRow();renderP();renderOH();renderS();fillDD();fillWD();calcR();calcW();calcPF();persist();showSave('All data reset',true);}
 var _origAddIng=addIng;addIng=function(){_origAddIng();persist();};
