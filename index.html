@@ -68,7 +68,6 @@ input:focus,select:focus{outline:none;border-color:var(--go);box-shadow:0 0 0 3p
 footer{background:var(--bd);color:rgba(253,246,236,.4);text-align:center;padding:11px;font-size:10px;}
 footer strong{color:var(--gl);}
 @media(max-width:400px){.g3{grid-template-columns:1fr 1fr;}.ir{grid-template-columns:1fr 1fr;}.ir .bdel{grid-column:span 2;justify-self:end;}}
-
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at top left, rgba(212,160,48,.10), transparent 32%),radial-gradient(circle at bottom right, rgba(122,62,26,.08), transparent 30%);pointer-events:none;z-index:-1;}
 .topbar{max-width:680px;margin:14px auto 0;padding:0 11px;}
 .hero{background:linear-gradient(135deg,#3D1F0D 0%,#5A2C12 52%,#7A3E1A 100%);color:var(--cr);border:1px solid rgba(242,201,110,.18);border-radius:16px;padding:18px 16px;box-shadow:0 10px 30px rgba(61,31,13,.18);position:relative;overflow:hidden;}
@@ -98,9 +97,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle
 .more-pricing summary::-webkit-details-marker{display:none;}
 .more-pricing summary::after{content:'+';float:right;font-size:16px;line-height:1;color:var(--go);}
 .more-pricing[open] summary::after{content:'−';}
-
 @media(max-width:560px){.hero-grid{grid-template-columns:1fr;}.hero h2{font-size:21px;}.hero-metrics{grid-template-columns:1fr 1fr;}}
-
 .tabs{display:none !important;}
 .pane{display:block !important;}
 .card{scroll-margin-top:16px;}
@@ -117,7 +114,6 @@ body{padding-bottom:24px;}
   <div class="ct">Single-Page Mobile Version</div>
   <div class="cs">Built to work for breads, cookies, cakes, pastries, bars, cupcakes, and more. Everything stays on one page so it actually works on phone previews and picky browsers.</div>
 </div>
-
 <div class="card" style="max-width:760px;margin:14px auto 0;">
   <div class="ct">Save & Backup Your Bakery Data</div>
   <div class="cs"><strong>Important:</strong> Your pantry, recipes, and expenses save automatically in this browser on this device. This is not cloud storage. If you switch devices, clear browser data, or use private mode, your data can be lost. Export a backup regularly.</div>
@@ -133,9 +129,7 @@ body{padding-bottom:24px;}
     <strong>Student reminder:</strong> Export your backup file after adding new recipes or updating pantry prices. Save the file to Google Drive, iCloud, Dropbox, or email it to yourself.
   </div>
 </div>
-
 <div id="saveFlash" class="saveflash">Saved</div>
-
 <!-- PANTRY -->
 <div id="pane-pantry" class="pane on">
   <div class="card">
@@ -167,7 +161,6 @@ body{padding-bottom:24px;}
   </div>
   <div class="htip">Most home bakers undercharge because they think in batches, not real costs. When you know your 10 lb bag of flour costs $9.99 and your recipe uses 500g, you know flour costs $1.10 per loaf — not a guess.</div>
 </div>
-
 <!-- RECIPE -->
 <div id="pane-recipe" class="pane">
   <div class="card">
@@ -243,7 +236,6 @@ body{padding-bottom:24px;}
   </div>
   <div class="htip">Passive time is not free, but paying yourself is still a strategy choice. Use this to separate what your time is truly worth from what you are choosing to take right now while you grow or reinvest.</div>
 </div>
-
 <!-- OVERHEAD -->
 <div id="pane-overhead" class="pane">
   <div class="card">
@@ -272,7 +264,6 @@ body{padding-bottom:24px;}
   </div>
   <div class="htip">Market fees are a real cost most bakers forget to price in. A $25 booth fee divided by 20 items is $1.25 per item just to be there — before a single ingredient. Track it here and know your real numbers.</div>
 </div>
-
 <!-- SAVED -->
 <div id="pane-saved" class="pane">
   <div class="card">
@@ -286,7 +277,6 @@ body{padding-bottom:24px;}
     <div id="menu-items"></div>
   </div>
 </div>
-
 <!-- WEEKLY -->
 <div id="pane-weekly" class="pane">
   <div class="card">
@@ -307,7 +297,6 @@ body{padding-bottom:24px;}
   <div class="card"><div class="ct">Growth Path</div><div class="cs">What happens when you add 5 more units per cycle?</div><div id="wgrow"></div></div>
   <div class="htip">Consistency beats big bake days every time. I built my loyal customer base by showing up every single week — same products, same quality, same schedule. One solid weekly bake cycle done consistently for 90 days builds more than three sporadic big ones ever will.</div>
 </div>
-
 <!-- PROFIT FIRST -->
 <div id="pane-pf" class="pane">
   <div class="card">
@@ -356,7 +345,6 @@ body{padding-bottom:24px;}
   </div>
   <div class="htip">I went into debt because I spent first and hoped there would be something left for me. There never was. Profit First flips that. You allocate the moment money comes in — even if your profit is just $2.50 that week. The habit is what matters.</div>
 </div>
-
 <!-- CHANNELS -->
 <div id="pane-channels" class="pane">
   <div class="card">
@@ -417,9 +405,7 @@ body{padding-bottom:24px;}
     <div class="htip">Simply Bread is what I use at Drott's Handmade. Post the menu, orders come in, bake what is ordered, done. Free and takes 20 minutes to set up. See it live at app.simply-bread.co/drottshandmade</div>
   </div>
 </div>
-
 <footer><strong>Home Bakery Pricing Calculator</strong> by Heather Drott · @drottshandmade<br>Built from a real home bakery in Atoka, Oklahoma · Premium Calculator Edition</footer>
-
 <script>
 var pantry=[],recipes=[],overheads=[];
 function saveState(){
@@ -440,6 +426,90 @@ var UM={lb:{b:'g',f:453.592,l:'lb',t:'w'},oz:{b:'g',f:28.3495,l:'oz',t:'w'},g:{b
 function toB(q,u){return q*((UM[u]&&UM[u].f)||1);}
 function cpu(i){var bq=toB(i.qty,i.unit);return bq>0?i.price/bq:0;}
 function fCPU(i){var c=cpu(i),m=UM[i.unit],bl=m?(m.b==='g'?'g':m.b==='ml'?'ml':'each'):'each';return '$'+c.toFixed(4)+'/'+bl;}
+// Ingredient-specific conversion profiles.
+// gramsPerCup converts recipe volume to weight.
+// gramsPerEach converts count-based recipe amounts to weight.
+var ING_PROFILES=[
+  {keys:['all purpose flour','all-purpose flour','ap flour','plain flour'],gramsPerCup:120},
+  {keys:['bread flour'],gramsPerCup:120},
+  {keys:['whole wheat flour','whole-wheat flour'],gramsPerCup:120},
+  {keys:['granulated sugar','white sugar','sugar'],gramsPerCup:200},
+  {keys:['brown sugar','light brown sugar','dark brown sugar'],gramsPerCup:220},
+  {keys:['powdered sugar','confectioners sugar','confectioner sugar','icing sugar'],gramsPerCup:120},
+  {keys:['buttermilk'],gramsPerCup:245},
+  {keys:['whole milk','milk'],gramsPerCup:245},
+  {keys:['salt','table salt','fine sea salt'],gramsPerCup:288},
+  {keys:['kosher salt'],gramsPerCup:240},
+  {keys:['baking powder'],gramsPerCup:192},
+  {keys:['baking soda'],gramsPerCup:220.8},
+  {keys:['banana','bananas'],gramsPerCup:225,gramsPerEach:118},
+  {keys:['butter'],gramsPerCup:227},
+  {keys:['walnut','walnuts','chopped walnuts'],gramsPerCup:117},
+  {keys:['egg','eggs','large egg','large eggs'],gramsPerEach:50},
+  {keys:['honey'],gramsPerCup:340},
+  {keys:['vegetable oil','avocado oil','olive oil','oil'],gramsPerCup:218},
+  {keys:['sourdough starter','starter'],gramsPerCup:227}
+];
+function normIngName(name){
+  return String(name||'')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+function getIngProfile(name){
+  var n=normIngName(name),best=null,bestLen=0;
+  ING_PROFILES.forEach(function(p){
+    p.keys.forEach(function(k){
+      var key=normIngName(k);
+      if((n===key || n.indexOf(key)>=0) && key.length>bestLen){
+        best=p;
+        bestLen=key.length;
+      }
+    });
+  });
+  return best;
+}
+function gramsFromRecipeAmount(ing,qty,useU){
+  var useMeta=UM[useU];
+  if(!useMeta)return null;
+  if(useMeta.t==='w')return toB(qty,useU);
+  var profile=getIngProfile(ing.name);
+  if(!profile)return null;
+  if(useMeta.t==='v' && profile.gramsPerCup){
+    var cups=toB(qty,useU)/UM.cup.f;
+    return cups*profile.gramsPerCup;
+  }
+  if(useMeta.t==='c' && profile.gramsPerEach){
+    return qty*profile.gramsPerEach;
+  }
+  return null;
+}
+function recipeIngredientCost(ing,qty,useU){
+  var buyMeta=UM[ing.unit],useMeta=UM[useU];
+  if(!buyMeta||!useMeta)return {ok:false,cost:0};
+  if(buyMeta.t===useMeta.t){
+    return {ok:true,cost:cpu(ing)*toB(qty,useU)};
+  }
+  var grams=gramsFromRecipeAmount(ing,qty,useU);
+  if(buyMeta.t==='w' && grams!==null){
+    return {ok:true,cost:cpu(ing)*grams};
+  }
+  if(buyMeta.t==='v' && grams!==null){
+    var profile=getIngProfile(ing.name);
+    if(profile && profile.gramsPerCup){
+      var mlNeeded=(grams/profile.gramsPerCup)*UM.cup.f;
+      return {ok:true,cost:cpu(ing)*mlNeeded};
+    }
+  }
+  if(buyMeta.t==='c' && grams!==null){
+    var countProfile=getIngProfile(ing.name);
+    if(countProfile && countProfile.gramsPerEach){
+      return {ok:true,cost:cpu(ing)*(grams/countProfile.gramsPerEach)};
+    }
+  }
+  return {ok:false,cost:0};
+}
 function go(n,b){var target=document.getElementById('pane-'+n); if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); } if(n==='weekly')fillWD();}
 function upUL(){var u=document.getElementById('ip-u').value;document.getElementById('ip-ul').textContent=(UM[u]&&UM[u].l)||u;}
 function pvw(){var q=parseFloat(document.getElementById('ip-q').value),u=document.getElementById('ip-u').value,p=parseFloat(document.getElementById('ip-p').value),el=document.getElementById('ip-pv');if(!q||!p){el.style.display='none';return;}var c=p/toB(q,u),m=UM[u];el.style.display='block';el.innerHTML='Cost per '+(m?m.b:'unit')+': $'+c.toFixed(4)+' | Per 100'+(m?m.b:'unit')+': $'+(c*100).toFixed(3);}
@@ -475,13 +545,17 @@ function calcR(){
         useU=(row.querySelectorAll('select')[1]&&row.querySelectorAll('select')[1].value)||'g',
         ing=pantry.find(function(i){return i.id===iId;});
     if(!ing||!qty)return;
-    var pkT=UM[ing.unit]&&UM[ing.unit].t,useT=UM[useU]&&UM[useU].t,ic=0;
-    if(pkT===useT||useU===ing.unit) ic=cpu(ing)*toB(qty,useU);
-    else if(useU==='each'||ing.unit==='each') ic=cpu(ing)*qty;
-    ingTot+=ic;
-    bkdn+=ing.name+' ('+qty+' '+((UM[useU]&&UM[useU].l)||useU)+'): $'+ic.toFixed(3)+'<br>';
+    var result=recipeIngredientCost(ing,qty,useU),
+        ic=result.cost||0;
+    if(result.ok){
+      ingTot+=ic;
+      bkdn+=ing.name+' ('+qty+' '+((UM[useU]&&UM[useU].l)||useU)+'): $'+ic.toFixed(2)+'<br>';
+    }else{
+      bkdn+='<span style="color:var(--rs);font-weight:600;">'+
+        ing.name+' ('+qty+' '+((UM[useU]&&UM[useU].l)||useU)+
+        '): conversion needed — not included</span><br>';
+    }
   });
-
   var truePassiveLabor=pas*wg*reality,
       trueActiveLabor=act*wg,
       trueLabor=trueActiveLabor+truePassiveLabor,
@@ -502,7 +576,6 @@ function calcR(){
         premium:{floorActive:0.28,floorPassive:0.08, marketActive:0.75, marketPassive:0.28, marketMargin:0.18, refCap:1.45, goalCap:1.70, label:'premium / specialty item'}
       },
       role=roleMap[mode]||roleMap.core;
-
   var floorBase=cashItem + (paidActiveLabor/yld)*role.floorActive + (paidPassiveLabor/yld)*role.floorPassive,
       floor=Math.max(cashItem*1.03, floorBase),
       marketBase=cashItem + (paidActiveLabor/yld)*role.marketActive + (paidPassiveLabor/yld)*role.marketPassive,
@@ -514,7 +587,6 @@ function calcR(){
       actualHourly=laborHours>0 ? paidLabor/laborHours : 0,
       targetHourly=laborHours>0 ? trueLabor/laborHours : 0,
       highIdeal=ideal>market*1.5;
-
   document.getElementById('ri').textContent='$'+cashItem.toFixed(2);
   document.getElementById('rc').textContent='$'+fullReference.toFixed(2);
   document.getElementById('rfloor').textContent='$'+floor.toFixed(2);
@@ -526,7 +598,6 @@ function calcR(){
       'Chosen pay labor: $'+paidLabor.toFixed(2)+' | True labor value: $'+trueLabor.toFixed(2)+
       ' | Reinvested / unpaid labor: $'+reinvest.toFixed(2)+' | Overhead: $'+oh.toFixed(2)
     : '';
-
   var ins=document.getElementById('rins');
   var which=document.getElementById('rwhich');
   var menuWarn=document.getElementById('rmenuwarn');
@@ -537,14 +608,12 @@ function calcR(){
     menuWarn.style.display='none';
     return;
   }
-
   if(menuCount>6){
     menuWarn.style.display='block';
     menuWarn.innerHTML='You have '+menuCount+' products on the weekly menu. That is how bakers turn a clean system into chaos. Tighten the menu unless there is a real reason not to.';
   }else{
     menuWarn.style.display='none';
   }
-
   if(reinvest>0 && payMode==='survival'){
     ins.className='ins';
     ins.innerHTML='You are choosing to reinvest labor instead of paying yourself fully. That is fine for a season, but call it what it is. You are leaving about $'+reinvest.toFixed(2)+' per batch in the business and paying yourself about $'+actualHourly.toFixed(2)+'/hr instead of $'+targetHourly.toFixed(2)+'/hr.';
@@ -558,16 +627,13 @@ function calcR(){
     ins.className='ins gd';
     ins.innerHTML='This range is usable. Put <strong>Market Price</strong> on your menu, protect <strong>Floor Price</strong> as your minimum, and treat <strong>Long-Term Goal Price</strong> as the target to grow toward.';
   }
-
   which.innerHTML=`<strong>Which number should you actually use?</strong><br>
   <strong>Market Price:</strong> Use this on your menu almost every time.<br>
   <strong>Floor Price:</strong> Hard minimum only. Do not build your menu here unless you want thin margins.<br>
   <strong>Long-Term Goal Price:</strong> Long-term target once your demand, efficiency, or positioning gets stronger.<br>
   <strong>Quick rule:</strong> If you are stuck, price at Market.`;
 }
-
 function saveR(){var name=document.getElementById('rn').value.trim();if(!name){alert('Give your recipe a name first.');return;}var sell=parseFloat(document.getElementById('rsp').textContent.replace('$',''))||0,prof=parseFloat(document.getElementById('rpf').textContent.replace('$',''))||0,cost=parseFloat(document.getElementById('rc').textContent.replace('$',''))||0,floor=parseFloat(document.getElementById('rfloor').textContent.replace('$',''))||0,ideal=parseFloat(document.getElementById('rideal').textContent.replace('$',''))||0,cash=parseFloat(document.getElementById('ri').textContent.replace('$',''))||0;if(!sell){alert('Add ingredients and calculate first.');return;}var ings=[];document.querySelectorAll('#rec-ings .ir').forEach(function(row){var iId=parseInt((row.querySelector('.isel')&&row.querySelector('.isel').value)||0),qty=parseFloat((row.querySelectorAll('input')[0]&&row.querySelectorAll('input')[0].value)||0)||0,useU=(row.querySelectorAll('select')[1]&&row.querySelectorAll('select')[1].value)||'g',ing=pantry.find(function(i){return i.id===iId;});if(ing&&qty)ings.push({iId:iId,qty:qty,useU:useU,name:ing.name});});var marketProfit=Math.max(0,sell-floor), marginPct=sell>0?(marketProfit/sell*100):0; var rec={id:Date.now(),name:name,sell:sell,market:sell,prof:prof,marketProfit:marketProfit,marginPct:marginPct,cost:cost,cash:cash,floor:floor,ideal:ideal,yld:parseFloat(document.getElementById('ry').value),act:parseFloat(document.getElementById('ra').value),pas:parseFloat(document.getElementById('rp').value),wg:parseFloat(document.getElementById('rw').value),payMode:document.getElementById('rpaymode').value,payRate:parseFloat(document.getElementById('rpw').value)||0,pk:parseFloat(document.getElementById('rpk').value),oh:parseFloat(document.getElementById('roh').value),mg:parseFloat(document.getElementById('rmg').value),reality:parseFloat(document.getElementById('rrm').value)||0.5,mode:(document.getElementById('rmode').value||'core'),menuCount:parseFloat(document.getElementById('rmenu').value)||5,ings:ings,saved:new Date().toLocaleDateString()};var idx=recipes.findIndex(function(r){return r.name.toLowerCase()===name.toLowerCase();});if(idx>=0){rec.id=recipes[idx].id;recipes[idx]=rec;}else recipes.push(rec);saveState();renderS();fillWD();alert(name+' saved! Find it in the Saved tab and Weekly tab.');}
-
 var ohF={weekly:1,monthly:1/4.33,annual:1/52,perbake:1};
 function setOHMsg(msg,kind){var el=document.getElementById('oh-msg');if(!el)return;el.style.display=msg?'block':'none';el.className='ins'+(kind==='error'?' dn':kind==='good'?' gd':'');el.textContent=msg||'';}
 function addOH(){
@@ -656,7 +722,6 @@ else if(st==='consistent'){next.className='ins gd';next.innerHTML='You are in co
 else if(st==='scaling'){next.className='ins gd';next.innerHTML='You are in scaling mode. These percentages assume stronger demand and tighter systems. If operations still feel starved here, you are not actually ready to scale yet.';}
 else{next.className='ins';next.innerHTML='Custom mode is active. Make sure you changed this for a real reason, not because the defaults hurt your feelings.';}
 }else{ins.innerHTML='';next.innerHTML='';}}
-
 var CB=[{id:'ch1',n:'Farm Stand or Porch Pickup',h:'Set one consistent weekly pickup window — same day, same time. Customers order by your cutoff, pick up on your delivery day.',t:'A cooler bag with names on orders and a payment QR code is all you need to start.',pr:['sub','town']},{id:'ch2',n:'Farmers Market or Pop-Up Market',h:'Apply for a stall and show up every single week — same booth, same products. Build regulars. Bring a Simply Bread signup card so customers can order between markets.',t:'Consistency beats everything. The baker who shows up every week builds a following. The occasional baker does not.',pr:['rural','town','sub','urban']},{id:'ch3',n:'Local Boutiques, Shops, or Mercantiles',h:'Walk in, introduce yourself, bring samples. Ask if they would like to carry your bread weekly. Deliver the same day every week. I stock 4 locations every Friday.',t:'Local shops want local products. You are not asking for a favor — you are offering something their customers already want.',pr:['rural','town','sub','urban']},{id:'ch4',n:'Local Delivery Route',h:'Map your drops into one efficient route on one set day. Bake the day before, deliver the next day. Same locations, same day, every week.',t:'Three to four stops is easy to manage. More than that and weigh whether the time cost is worth the revenue.',pr:['rural','town','sub']},{id:'ch5',n:'Workplaces or Offices',h:'Find someone you know in a 20-plus person office. Give them a sample box to share. One office contact can mean 8 to 12 consistent orders every week.',t:'Take care of your office ambassador and they will keep orders coming.',pr:['sub','urban','town']},{id:'ch6',n:'Church or Community Organization',h:'Tell your community what you are doing. Bring samples. Share your Simply Bread link in your group chat or bulletin. These people already trust you.',t:'This is where most home bakers get their very first orders. Do not overthink it.',pr:['rural','town','sub','urban']},{id:'ch7',n:'Wholesale or Events',h:'Add this after your weekly system is consistent. Wholesale means bulk at a reduced price. Price it correctly so it is still profitable.',t:'Know your wholesale minimum before quoting anyone. Run it through your cost calculator first.',pr:['town','sub','urban']},{id:'ch8',n:'Online Orders via Simply Bread',h:'Set up your free account, post your menu, share your link everywhere. Customers sign up once and can order every week.',t:'Simply Bread works on top of every other channel. Store locations, markets, farm stand — handles individual orders alongside all of it.',pr:['rural','town','sub','urban']}];
 var CP={rural:['ch8','ch6','ch2','ch3','ch4','ch1','ch5','ch7'],town:['ch6','ch8','ch1','ch2','ch3','ch4','ch5','ch7'],sub:['ch1','ch8','ch6','ch5','ch2','ch3','ch4','ch7'],urban:['ch8','ch6','ch1','ch5','ch2','ch3','ch4','ch7']};
 function calcCh(){var loc=document.getElementById('chloc').value,anyOn=false,ck={};CB.forEach(function(c){var v=document.getElementById(c.id)&&document.getElementById(c.id).checked;ck[c.id]=v;if(v)anyOn=true;});if(!loc&&!anyOn)return;var card=document.getElementById('ch-res');card.style.display='block';var num=Object.values(ck).filter(Boolean).length,h='';var lm={rural:'<div class="ins" style="margin-bottom:10px;"><strong>Rural is my situation too.</strong> No foot traffic, far from town. It just shapes which channels you build first.</div>',town:'<div class="ins" style="margin-bottom:10px;"><strong>Small town is a real advantage.</strong> You can become the known home baker in your community fast.</div>',sub:'<div class="ins" style="margin-bottom:10px;"><strong>Suburban gives you options.</strong> Pick one starting channel and build from there.</div>',urban:'<div class="ins" style="margin-bottom:10px;"><strong>Urban means more competition but more customers.</strong> Your edge is the personal relationship — not price.</div>'};if(loc&&lm[loc])h+=lm[loc];if(num>3)h+='<div class="ins dn" style="margin-bottom:10px;">You have checked '+num+' channels. Start with 1 to 2 for your first 90 days. One channel done well is a business. Five done poorly is chaos.</div>';var pr=CP[loc]||['ch8','ch6','ch1','ch2','ch3','ch4','ch5','ch7'],ord=pr.filter(function(k){return ck[k];});if(!ord.length){h+='<p style="font-size:12px;color:var(--tm);padding:7px 0;">Check the channels available to you above to see your path.</p>';}else{ord.forEach(function(k,i){var ch=CB.find(function(c){return c.id===k;});if(!ch)return;h+='<div class="li" style="flex-direction:column;align-items:flex-start;gap:6px;padding:12px;margin-bottom:6px;"><div style="display:flex;align-items:center;gap:8px;width:100%;"><div style="background:'+(i===0?'var(--go)':'var(--br)')+';color:'+(i===0?'var(--bd)':'var(--tm)')+';width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">'+(i+1)+'</div><div style="font-size:13px;font-weight:600;color:var(--bd);">'+ch.n+'</div>'+(i===0?'<span class="tag tg" style="margin-left:auto;">Start here</span>':'')+'</div><div style="font-size:12px;line-height:1.6;color:var(--tx);padding-left:28px;">'+ch.h+'</div><div style="font-size:11px;color:var(--bm);background:rgba(181,100,42,0.08);padding:7px 9px;border-radius:6px;margin-left:28px;line-height:1.5;">Tip: '+ch.t+'</div></div>';});}h+='<div class="htip" style="margin-top:4px;">The system is always the same — weekly menu, bake what is ordered, deliver on a set day, repeat. The channel is just how products reach customers. What I teach works whether you have a farm stand, a market booth, store locations, or all three.</div>';document.getElementById('ch-adv').innerHTML=h;}
@@ -668,23 +733,21 @@ function hydrate(){try{var raw=localStorage.getItem(storageKey());if(!raw)return
 function exportData(){var payload={exportedAt:new Date().toISOString(),pantry:pantry,recipes:recipes,overheads:overheads};var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='homebakery-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},800);showSave('Data exported');}
 function importData(event){var file=event.target.files&&event.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(){try{var data=JSON.parse(reader.result);pantry=Array.isArray(data.pantry)?data.pantry:[];recipes=Array.isArray(data.recipes)?data.recipes:[];overheads=Array.isArray(data.overheads)?data.overheads:[];renderP();renderOH();renderS();fillDD();fillWD();if(!document.querySelectorAll('#rec-ings .ir').length){addRow();}calcR();calcW();calcPF();persist();showSave('Data imported');}catch(e){showSave('Import failed',true);alert('That file is not valid calculator data.');}};reader.readAsText(file);event.target.value='';}
 function resetAllData(){if(!confirm('Delete all pantry items, recipes, and overhead data from this browser?'))return;pantry=[];recipes=[];overheads=[];document.getElementById('rec-ings').innerHTML='';rowIds=[];addRow();renderP();renderOH();renderS();fillDD();fillWD();calcR();calcW();calcPF();persist();showSave('All data reset',true);}
-var _origAddIng=addIng;addIng=function(){_origAddIng();persist();};
-var _origDelIng=delIng;delIng=function(id){_origDelIng(id);persist();};
-var _origSaveR=saveR;saveR=function(){_origSaveR();persist();};
-var _origDelS=delS;delS=function(id){_origDelS(id);persist();fillWD();};
-var _origAddOH=addOH;addOH=function(){var ok=_origAddOH();persist();return ok;};
-var _origDelOH=delOH;delOH=function(id){_origDelOH(id);persist();};
-var _origClrR=clrR;clrR=function(){_origClrR();persist();};
+var origAddIng=addIng;addIng=function(){origAddIng();persist();};
+var origDelIng=delIng;delIng=function(id){origDelIng(id);persist();};
+var origSaveR=saveR;saveR=function(){origSaveR();persist();};
+var origDelS=delS;delS=function(id){origDelS(id);persist();fillWD();};
+var origAddOH=addOH;addOH=function(){var ok=origAddOH();persist();return ok;};
+var origDelOH=delOH;delOH=function(id){origDelOH(id);persist();};
+var origClrR=clrR;clrR=function(){origClrR();persist();};
 document.addEventListener('input',function(e){if(e.target.matches('input, select')){clearTimeout(window.__persistTimer);window.__persistTimer=setTimeout(persist,250);}});
 hydrate();
 renderP();renderOH();renderS();fillDD();if(!document.querySelectorAll('#rec-ings .ir').length){addRow();}calcR();calcW();fillWD();applyPFStage();
-
 (function(){
   var btn=document.getElementById('add-expense-btn');
   if(btn){btn.addEventListener('click',function(e){e.preventDefault();addOH();});}
   ['on','oa'].forEach(function(id){var el=document.getElementById(id); if(el){el.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addOH();}});}});
 })();
-
 </script>
 </body>
-      </html>
+</html>
